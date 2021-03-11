@@ -4,7 +4,7 @@
     <list default="true" id="b24ff710-6f04-4662-b083-e6d15a5baceb" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autoesk_main/pgdas_fiscal_oesk/data_clients_files/giss_passwords.txt" beforeDir="false" afterPath="$PROJECT_DIR$/autoesk_main/pgdas_fiscal_oesk/data_clients_files/giss_passwords.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autoesk_main/with_titlePATH.txt" beforeDir="false" afterPath="$PROJECT_DIR$/autoesk_main/with_titlePATH.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,11 +40,12 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/autoesk_main/pgdas_fiscal_oesk/data_clients_files" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="H:\MY_PROJECTS\autoesk_project\autoesk_main\pgdas_fiscal_oesk\data_clients_files" />
       <recent name="H:\MY_PROJECTS\autoesk_project" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
