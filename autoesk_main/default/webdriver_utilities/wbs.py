@@ -3,6 +3,7 @@ from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import WebDriverException, TimeoutException, JavascriptException, InvalidArgumentException
 from selenium.common.exceptions import ElementClickInterceptedException, NoSuchElementException, NoSuchWindowException
+from selenium.common.exceptions import NoAlertPresentException
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys

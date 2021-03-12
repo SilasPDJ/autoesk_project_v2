@@ -9,7 +9,7 @@ class NewSetPaths(Dirs, Now):
     main_path += '\with_titlePATH.txt'
     # Dirs.pathit
 
-    @ classmethod
+    @classmethod
     def getset_folderspath(cls):
         """Seleciona onde estão as pastas e planihas
 
@@ -24,7 +24,7 @@ class NewSetPaths(Dirs, Now):
                 returned = f.read()
         except FileNotFoundError:
             FileExistsError('WITH TITLE PATH NOT EXISTENTE ')
-            returned = cls.select_path_if_not_exists()
+            returned = cls.select_path_if_not_exists(None)
         finally:
             return returned
 
@@ -79,7 +79,7 @@ class NewSetPaths(Dirs, Now):
         return compt
 
     @ classmethod
-    def files_path(cls, pasta_client, insyear=None, ano=None):
+    def files_pathit(cls, pasta_client, insyear=None, ano=None):
         from imports import relativedelta as du_rl
         from datetime import date
 
@@ -106,12 +106,42 @@ class NewSetPaths(Dirs, Now):
 
         excel_file_name = cls.getset_folderspath()
         # print(insyear, excel_file_name)
-        defis_path = excel_file_name
-
-        defis_path_final = [*str(defis_path).split('\\'),
-                            ano, insyear, pasta_client]
-        salva_path = Dirs.pathit(*defis_path_final)
+        __path = excel_file_name
+        path_final = [*str(__path).split('\\'),
+                      ano, insyear, pasta_client]
+        salva_path = Dirs.pathit(*path_final)
         return salva_path
+
+    def files_get_anexos_v3(self, client, file_type='pdf', compt=None, upload=False):
+        """
+        :param client: nome da pasta onde estão os arquivos organizados por data dd-mm-yyyy
+        :param file_type: file annexed type
+        :param compt: 10-2020; 02-2019 etc
+        :param upload: False -> email it! True: upload it!
+        :return: pdf_files or whatever
+
+        # _files_path
+        """
+        from email.mime.application import MIMEApplication
+        if compt is None:
+            compt = self.get_compt_only()
+        path = self.files_pathit(client, compt)
+        pdf_files = list()
+        # Lucas Restaurante
+
+        dir_searched_now = path
+        list_checked_returned = [os.path.join(dir_searched_now, fname)
+                                 for fname in os.listdir(dir_searched_now) if fname.lower().endswith(file_type)]
+
+        for fname in list_checked_returned:
+            if upload:
+                file_opened = MIMEApplication(open(fname, 'rb').read())
+                file_opened.add_header('Content-Disposition', 'attachment', filename=fname)
+                pdf_files.append(file_opened)
+            else:
+                pdf_files.append(f'{fname}')
+        input(pdf_files)
+        return pdf_files
 
     def excel_file_path(self, excelfolder='__EXCEL POR COMPETENCIAS__', fncompt=None, ext="xlsx"):
         """return excel path inside always self.getset_folderpath()
@@ -129,3 +159,5 @@ class NewSetPaths(Dirs, Now):
         this_path = self.pathit(main_path, excelfolder, fncompt)
         return this_path
 
+
+NewSetPaths().files_get_anexos_v3(r'Dívidas_Simples_CRB', compt='01-2021')

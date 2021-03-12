@@ -2,9 +2,24 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b24ff710-6f04-4662-b083-e6d15a5baceb" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/autoesk_main/_init_email.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/autoesk_main/pgdas_fiscal_oesk/emails_date_scrap/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/autoesk_main/send_dividas.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/autoesk_main/send_pgdasmail.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autoesk_main/with_titlePATH.txt" beforeDir="false" afterPath="$PROJECT_DIR$/autoesk_main/with_titlePATH.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autoesk_main/GIA_vatual.py" beforeDir="false" afterPath="$PROJECT_DIR$/autoesk_main/GIA_vatual.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autoesk_main/___init___.py" beforeDir="false" afterPath="$PROJECT_DIR$/autoesk_main/___init___.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autoesk_main/_new_set_paths.py" beforeDir="false" afterPath="$PROJECT_DIR$/autoesk_main/_new_set_paths.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autoesk_main/default/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/autoesk_main/default/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autoesk_main/default/webdriver_utilities/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/autoesk_main/default/webdriver_utilities/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autoesk_main/default/webdriver_utilities/wbs.py" beforeDir="false" afterPath="$PROJECT_DIR$/autoesk_main/default/webdriver_utilities/wbs.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autoesk_main/dividas_simplesNacional.py" beforeDir="false" afterPath="$PROJECT_DIR$/autoesk_main/dividas_simplesNacional.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autoesk_main/ginfess_download.py" beforeDir="false" afterPath="$PROJECT_DIR$/autoesk_main/ginfess_download.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autoesk_main/imports.py" beforeDir="false" afterPath="$PROJECT_DIR$/autoesk_main/imports.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autoesk_main/pgdas_fiscal_oesk/data_clients_files/setpaths2.py" beforeDir="false" afterPath="$PROJECT_DIR$/autoesk_main/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autoesk_main/silas_abre_g5_loop_v6_finally.py" beforeDir="false" afterPath="$PROJECT_DIR$/autoesk_main/silas_abre_g5_loop_v6_finally.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,21 +55,24 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/autoesk_main/pgdas_fiscal_oesk/data_clients_files" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/autoesk_main/pgdas_fiscal_oesk" />
+    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="H:\MY_PROJECTS\autoesk_project\autoesk_main\pgdas_fiscal_oesk" />
       <recent name="H:\MY_PROJECTS\autoesk_project\autoesk_main\pgdas_fiscal_oesk\data_clients_files" />
       <recent name="H:\MY_PROJECTS\autoesk_project" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="H:\MY_PROJECTS\autoesk_project\autoesk_main\default\webdriver_utilities" />
+      <recent name="H:\MY_PROJECTS\autoesk_project\autoesk_main\pgdas_fiscal_oesk" />
       <recent name="H:\MY_PROJECTS\autoesk_project\autoesk_main" />
+      <recent name="H:\MY_PROJECTS\autoesk_project\autoesk_main\default" />
+      <recent name="H:\MY_PROJECTS\autoesk_project\autoesk_main\default\webdriver_utilities" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.dividas_simplesNacional">
-    <configuration name="___init___" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Python._new_set_paths">
+    <configuration name="_init_email" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="autoesk_project" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -66,7 +84,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/autoesk_main/___init___.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/autoesk_main/_init_email.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -182,11 +200,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python._new_set_paths" />
+        <item itemvalue="Python._init_email" />
         <item itemvalue="Python.dividas_simplesNacional" />
         <item itemvalue="Python.pathmanager" />
-        <item itemvalue="Python._new_set_paths" />
         <item itemvalue="Python.imports" />
-        <item itemvalue="Python.___init___" />
       </list>
     </recent_temporary>
   </component>

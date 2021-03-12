@@ -3,8 +3,8 @@ from time import sleep
 
 from default.interact import *
 
-from default.settings import SetPaths
-from default.data_treatment import ExcelToData
+from imports import ExcelToData
+from _new_set_paths import NewSetPaths
 
 from pgdas_fiscal_oesk.relacao_nfs import tres_valores_faturados, NfCanceled
 from pyperclip import paste
@@ -24,9 +24,9 @@ possible = ['G5_ISS', 'G5_ICMS']
 # vai p/ NEEDED_PANDAS
 
 
-class Fantasia(SetPaths, ExcelToData):
+class Fantasia(NewSetPaths, ExcelToData):
 
-    def __init__(self, compt_file=None):
+    def __init__(self):
         """
         :param compt_file: from GUI
 
@@ -37,18 +37,8 @@ class Fantasia(SetPaths, ExcelToData):
         # O vencimento DAS(seja pra qual for a compt) está certo, haja vista que se trata do mes atual
 
         sh_names = possible
-        if compt_file is None:
-
-            """# Atualização, 14/01/2021"""
-            # self.set_compt_only() == self.set_get_compt_file(file_type=None)
-            # a = self.set_get_compt_file(file_type=None, m_cont=12)
-            # descobri como fazer..
-
-            compt_file = self.compt_and_filename()
-            compt, excel_file_name = compt_file
-        else:
-            compt, excel_file_name = compt_file
-
+        compt_file = super().get_compt_only()
+        excel_file_name = super().excel_file_path()
 
         # ###############################
         self.abre_programa('G5')
@@ -81,7 +71,7 @@ class Fantasia(SetPaths, ExcelToData):
                     pass
 
                 elif sh_name == 'G5_ISS' and sh_name in possible:
-                    self.client_path = self._files_path_v3(CLIENTE, wexplorer_tup=compt_file)
+                    self.client_path = self.files_pathit(CLIENTE)
                     meus_3_valores_atuais = tres_valores_faturados(self.client_path)
                     # Se tem 3valores[excel], tem XML. Se não tem, não tem
                     # (pois o xml e excel vem do ginfess_download)....
@@ -89,7 +79,7 @@ class Fantasia(SetPaths, ExcelToData):
                     registronta = self.registronta(CLIENTE, compt_file)
                     print(CLIENTE)
                     if meus_3_valores_atuais and registronta:
-                        all_xls_inside = self.files_get_anexos_v2(CLIENTE, file_type='xlsx', wexplorer_tup=compt_file)
+                        all_xls_inside = self.files_get_anexos_v3(CLIENTE, file_type='xlsx', compt=compt_file)
                         relacao_notas = all_xls_inside[0] if len(all_xls_inside) == 1 else IndexError()
                         self.activating_client(self.formatar_cnpj(CNPJ))
                         # Agora vai ser por cnpj...
@@ -191,7 +181,7 @@ class Fantasia(SetPaths, ExcelToData):
                         """save in adobe"""
 
     def get_xml(self, cliente):
-        b = self.files_get_anexos_v2(cliente, file_type='xml', upload=False)
+        b = self.files_get_anexos_v3(cliente, file_type='xml', upload=False)
         b = b[0]
         b = b.split('\\')
         file = f'\\\\{b[-1]}'
@@ -213,7 +203,7 @@ class Fantasia(SetPaths, ExcelToData):
         :return: se tiver pdf que tem ISS e REGISTRO
         """
         registronta = False
-        for f in self.files_get_anexos_v2(client, file_type='pdf', wexplorer_tup=compt_file):
+        for f in self.files_get_anexos_v3(client, file_type='pdf', compt=compt_file):
             if 'ISS' in f.upper():
                 registronta = False
                 break

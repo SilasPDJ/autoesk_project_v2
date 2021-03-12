@@ -5,5 +5,8 @@ new-site.html
 *.log
 
 /venv/
+autoesk_main/pgdas_fiscal_oesk/data_clients_files/
+
 autoesk_main/pgdas_fiscal_oesk/data_clients_files/giss_passwords.txt
 autoesk_main/with_titlePATH.txt
+

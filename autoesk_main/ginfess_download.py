@@ -1,27 +1,29 @@
 from imports import WDShorcuts, ExcelToData
 from imports import Keys, By, WebDriverWait, expected_conditions
-from imports import TimeoutException, ElementClickInterceptedException, NoSuchElementException, InvalidArgumentException
-from imports import pgdas_driver, activate_window, press_key_b4
+from imports import ElementClickInterceptedException, NoSuchElementException, InvalidArgumentException, NoAlertPresentException
+from imports import ginfess_driver, activate_window, press_key_b4
 
 from _new_set_paths import NewSetPaths
 from openpyxl import Workbook
 
+
+from imports import HasJson
+
 # olhar esse JsonWithImprov
 
 
-class DownloadGinfessGui(WDShorcuts, NewSetPaths, ExcelToData):
+class DownloadGinfessGui(WDShorcuts, NewSetPaths, ExcelToData, HasJson):
 
     # only static methods from JsonDateWithDataImprove
 
     def __init__(self):
         from time import sleep
-        from smtp_project.init_email import JsonDateWithImprove as Jj
 
-        compt = super().get_compt_only()
+        front_compt = super().get_compt_only()
         fname = excel_file_name = super().excel_file_path()
 
         print('teste ginfess')
-        json_file = Jj.load_json(fname)
+        json_file = self.load_json(fname)
         # input(len(after_READ['CNPJ']))
         print('-='*30)
         print(f'{"Ginfess Download":^30}')
@@ -43,7 +45,7 @@ class DownloadGinfessGui(WDShorcuts, NewSetPaths, ExcelToData):
             _city = ''.join(values[-4])
             print(_ginfess_cod, _city)
             # mesma coisa de self.any_to_str, só que ele aceita args desempacotados
-            client_path = self.files_path(_cliente, compt)
+            client_path = self.files_pathit(_cliente, front_compt)
             self.client_path = client_path
 
             # Checa se já existe certificado
@@ -137,7 +139,7 @@ class DownloadGinfessGui(WDShorcuts, NewSetPaths, ExcelToData):
 
                     # self.tag_with_text('td', 'Movimento ').click()
 
-                    WebDriverWait(self.driver, 10).until(expected_conditions())
+                    WebDriverWait(self.driver, 10).until(expected_conditions.presence_of_element_located((By.ID, 'main')))
 
                     iframe = driver.find_element_by_id('main')
                     driver.switch_to_frame(iframe)
@@ -145,8 +147,8 @@ class DownloadGinfessGui(WDShorcuts, NewSetPaths, ExcelToData):
                     driver.implicitly_wait(5)
 
                     # handelling select
-                    compt = self.compt_and_filename()[0]
-                    mes, ano = compt.split('-')
+                    front_compt = front_compt
+                    mes, ano = front_compt.split('-')
 
                     driver.find_element_by_name('ano').clear()
                     driver.find_element_by_name('ano').send_keys(ano)

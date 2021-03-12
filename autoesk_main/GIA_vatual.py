@@ -1,16 +1,16 @@
 from imports import WDShorcuts, ExcelToData
 from imports import Keys, By, WebDriverWait, expected_conditions
-from imports import TimeoutException, ElementClickInterceptedException, NoSuchElementException
-from imports import activate_window, press_key_b4
+from imports import TimeoutException, ElementClickInterceptedException, NoSuchElementException, NoAlertPresentException
+from imports import activate_window, press_key_b4, foritab
+from imports import contmatic_select_by_name
 
 from _new_set_paths import NewSetPaths
-from imports import sleep
-
 
 import pyautogui as pygui
 from time import sleep
 # import pywinauto as pwin
 import pandas as pd
+import os
 
 link = "ChromeDriver/chromedriver.exe"
 possible = ['GIA']
@@ -57,7 +57,7 @@ class GIA(WDShorcuts, NewSetPaths, ExcelToData):
                 # pygui.hotkey('alt', 'tab')
                 print(ie)
                 #
-                self._client_path = self._files_path_v3('GIA_'+r_social)
+                self._client_path = self.files_pathit('GIA_' + r_social)
                 _client_path = self._client_path
 
                 if 'sim' != feita.strip().lower() != 'ok':

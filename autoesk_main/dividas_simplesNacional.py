@@ -1,9 +1,9 @@
 # dale
-from imports import WDShorcuts, ExcelToData
 from imports import Keys, By, WebDriverWait, expected_conditions
 from imports import TimeoutException, ElementClickInterceptedException, NoSuchElementException
 from imports import activate_window, press_key_b4
 
+from imports import WDShorcuts, ExcelToData
 from _new_set_paths import NewSetPaths
 from imports import sleep
 
@@ -44,7 +44,7 @@ class Dividas(WDShorcuts, NewSetPaths, ExcelToData):
 
                 if JA_DECLARED not in ['S', 'OK', 'FORA']:
 
-                    self.client_path = self.files_path('Dívidas_Simples_'+CLIENTE, compt)
+                    self.client_path = self.files_pathit('Dívidas_Simples_' + CLIENTE, compt)
                     __client_path = self.client_path
 
                     self.driver = pgdas_driver(__client_path)
