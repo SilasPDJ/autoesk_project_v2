@@ -1,49 +1,42 @@
-from smtp_project import EmailExecutor
-from default import SetPaths, ExcelToData
-# from smtp_project import *
+# from default import NewSetPaths, ExcelToData
+
+from imports import EmailExecutor
+from _new_set_json import MakeJson
 
 
-
-class PgDasmailSender(EmailExecutor):
-
-    def __init__(self, fname, compt_file: tuple):
+class PgDasmailSender(EmailExecutor, MakeJson):
+    def __init__(self, fname, compt=None):
         """
         :param fname: nome do json
-        :param compt_file: compt_file...
+        :param compt: compt...
         """
-        from smtp_project.init_email import JsonDateWithImprove as Jj
         from default.interact import press_keys_b4, press_key_b4
-        super().__init__()
 
         self.venc_das = self.vencimento_das()
         # sh_names = 'sem_mov', 'G5_ISS', 'G5_ICMS'
+        if compt is None:
+            compt = super().get_compt_only()
+        excel_file_name = super().excel_file_path()
+        MakeJson.__init__(self, compt, excel_file_name)
 
-        if compt_file is None:
-            # compt, excel_file_name = self.get_atual_compt_set(1)
-            compt_file = self.compt_and_filename()
-            compt, excel_file_name = compt_file
-        else:
-            compt, excel_file_name = compt_file
-        # posso mudar os argumentos de get_atual_competencia, ele já tem padrão, mas coloquei pra lembrar
         mail_header = f"Fechamentos para apuração do imposto PGDAS, competência: {compt.replace('-', '/')}"
         print('titulo: ', mail_header)
-        # é o meu teste
-        json_file = Jj.load_json(fname)
-        # for eid in range(len(json_file.keys()))
-        for eid in json_file.keys():
-            after_json = self.readnew_lista_v_atual(json_file[eid])
-            # input(after_json)
-            custom_values = [v.values() for v in json_file[eid]]
-            _cliente, _cnpj, _cpf, _cod_simples, _ja_declared = self.any_to_str(*custom_values[:5])
+        for each_dict in self.read_from_json():
+            for k, v in each_dict.items():
+                print(k, v)
 
-            _icms_or_iss = after_json['spreadsheet']
+            custom_values = list(each_dict.values())
+            _cliente, _cnpj, _cpf, _cod_simples, _ja_declared = self.any_to_str(*custom_values[:5])
+            print(_cliente, _cnpj, _cpf, _cod_simples, _ja_declared)
+            _icms_or_iss = each_dict['spreadsheet']
+
             try:
-                _valor = self.trata_money_excel(after_json['Valor'])
+                _valor = self.trata_money_excel(each_dict['Valor'])
             except KeyError:
                 _valor = self.trata_money_excel('zerou')
             try:
-                now_email = after_json['email']
-                _ja_foi_env = after_json['envio'].upper().strip()
+                now_email = each_dict['email']
+                _ja_foi_env = each_dict['envio'].upper().strip()
             except KeyError:
                 print(f'CLIENTE {_cliente}\033[1;31m NÃO\033[m tem email')
                 _ja_foi_env = 'OK'
@@ -58,16 +51,19 @@ class PgDasmailSender(EmailExecutor):
                     # input(message)
                     das_message = self.write_message(message)
 
-                    das_anx_files = self.files_get_anexos(_cliente)
-                    self.main_send_email(now_email, mail_header, das_message, das_anx_files)
-                    # self.main_send_email('silsilinhas@gmail.com', mail_header, das_message, das_anx_files)
+                    das_anx_files = self.files_get_anexos_v3(_cliente, file_type='pdf', compt=compt)
+                    # self.main_send_email(now_email, mail_header, das_message, das_anx_files)
+                    input('security, silsilinhas')
+                    self.main_send_email('silsilinhas@gmail.com', mail_header, das_message, das_anx_files)
                     """a partir do terceiro argumento, só há mensagens attachedas"""
 
                     print('Enviado...')
 
     def mail_pgdas_msg(self, client, cnpj, tipo_das, valor):
+        path_colours = os.path.dirname(__file__)
+        path_colours = os.path.join(path_colours, 'default/data_treatment')
+        colours = self.load_json(path_colours+'/zlist_colours.json')
 
-        colours = self.load_json('zlist_colours.json')
         red, blue, money = self.wcor(colours[114]), self.wcor('blue'), 'style="background-color:yellow; color:green"'
         ntt = self.tag_text
         inso = self.inside_me_others
@@ -109,3 +105,8 @@ Este e-mail é automático. Por gentileza, cheque o nome e o CNPJ ({ntt('span'+r
 
         """
         return full_mensagem
+
+import os
+fname = f'{os.path.dirname(__file__)}/pgdas_fiscal_oesk/data_clients_files/example_iss.json'
+
+PgDasmailSender(fname)

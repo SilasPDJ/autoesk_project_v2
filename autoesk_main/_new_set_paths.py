@@ -24,15 +24,15 @@ class NewSetPaths(Dirs, Now):
                 returned = f.read()
         except FileNotFoundError:
             FileExistsError('WITH TITLE PATH NOT EXISTENTE ')
-            returned = cls.select_path_if_not_exists(None)
+            returned = cls.select_path_if_not_exists(self=NewSetPaths)
         finally:
             return returned
 
-    def select_path_if_not_exists(self, some_message="SELECIONE ONDE ESTÃO SUAS PASTAS.", registrer=main_path):
+    def select_path_if_not_exists(self, some_message="SELECIONE ONDE ESTÃO SUAS PASTAS.", savit=main_path):
         """[summary]
         Args:
             some_message (str, optional): []. Defaults to "SELECIONE ONDE ESTÃO SUAS PLANILHAS".
-            register (str, optional): customizable, where to save the info
+            savit (str, optional): customizable, where to save the info
         Returns:
             [type]: [description]
         """
@@ -52,7 +52,7 @@ class NewSetPaths(Dirs, Now):
                 if not resp:
                     return False
             else:
-                wf = open(registrer, 'w')
+                wf = open(savit, 'w')
                 wf.write(way)
                 root.quit()
                 return way
@@ -78,6 +78,22 @@ class NewSetPaths(Dirs, Now):
         compt = f'{month:02d}{sep}{year}'
         return compt
 
+    def excel_file_path(self, excelfolder='__EXCEL POR COMPETENCIAS__', fncompt=None, ext="xlsx"):
+        """return excel path inside always self.getset_folderpath()
+
+        Args:
+            excelfolder (str, optional): excel folder. Defaults to '__EXCEL POR COMPETENCIAS__'.
+            fncompt (str, optional): filename. Defaults to None (compt).
+            ext (str, optional): filename suffix
+        """
+        if fncompt is None:
+            fncompt = self.get_compt_only()
+        fncompt = os.path.join(fncompt+"."+ext)
+
+        main_path = self.getset_folderspath()
+        this_path = self.pathit(main_path, excelfolder, fncompt)
+        return this_path
+
     @ classmethod
     def files_pathit(cls, pasta_client, insyear=None, ano=None):
         from imports import relativedelta as du_rl
@@ -94,9 +110,11 @@ class NewSetPaths(Dirs, Now):
             [type]: [description]
         """
         insyear = cls.get_compt_only() if insyear is None else insyear
-
+        compt = insyear
         if ano is None:
-            ano = ''.join([insyear[e+1:] for e in range(len(insyear)) if insyear[e] not in '0123456789'])
+            # ano = ''.join([insyear[e+1:] for e in range(len(insyear)) if insyear[e] not in '0123456789'])
+            ill_split = ''.join([v for v in compt if v not in '0123456789'])
+            mes, ano = compt.split(ill_split)
             try:
                 int(ano)
             except ValueError:
@@ -111,6 +129,40 @@ class NewSetPaths(Dirs, Now):
                       ano, insyear, pasta_client]
         salva_path = Dirs.pathit(*path_final)
         return salva_path
+
+    def first_and_last_day_compt(self, insyear=None, sep='/'):
+        """
+        ELE JÁ PEGA O ANTERIOR MAIS PROX
+        :param str insyear:(competencia or whatever). Defaults then call cls.get_compt_only() as default
+        :param sep: separates month/year
+        # É necessario o will_be pois antes dele é botado ao contrário
+        # tipo: 20200430
+        # ano 2020, mes 04, dia 30... (exemplo)
+        :return: ÚLTIMO DIA DO MES
+        """
+        from datetime import date, timedelta
+        from dateutil.relativedelta import relativedelta
+
+        if insyear is None:
+            insyear = self.get_compt_only()
+
+        compt = insyear
+        ill_split = ''.join([v for v in compt if v not in '0123456789'])
+        mes, ano = compt.split(ill_split)
+
+        mes, ano = int(mes), int(ano)
+        #  - timedelta(days=1)
+        # + relativedelta(months=1)
+
+        last_now = date(ano, mes, 1) + relativedelta(months=1)
+        last_now -= timedelta(days=1)
+        first_now = date(ano, mes, 1)
+
+        z, a = last_now, first_now
+        br1st = f'{a.day:02d}{sep}{a.month:02d}{sep}{a.year}'
+        brlast = f'{z.day:02d}{sep}{z.month:02d}{sep}{z.year}'
+        print(br1st, brlast)
+        return br1st, brlast
 
     def files_get_anexos_v3(self, client, file_type='pdf', compt=None, upload=False):
         """
@@ -140,24 +192,29 @@ class NewSetPaths(Dirs, Now):
                 pdf_files.append(file_opened)
             else:
                 pdf_files.append(f'{fname}')
-        input(pdf_files)
         return pdf_files
 
-    def excel_file_path(self, excelfolder='__EXCEL POR COMPETENCIAS__', fncompt=None, ext="xlsx"):
-        """return excel path inside always self.getset_folderpath()
+    @staticmethod
+    def get_last_business_day_of_month(month=None, year=None):
+        from calendar import monthrange
+        from datetime import datetime
+        if month is None:
+            month = datetime.now().month
+        if year is None:
+            year = datetime.now().year
 
-        Args:
-            excelfolder (str, optional): excel folder. Defaults to '__EXCEL POR COMPETENCIAS__'.
-            fncompt (str, optional): filename. Defaults to None (compt).
-            ext (str, optional): filename suffix
-        """
-        if fncompt is None:
-            fncompt = self.get_compt_only()
-        fncompt = os.path.join(fncompt+"."+ext)
+        init = monthrange(year, month)
+        ultimo_day = init[1]
+        business_date = datetime(year, month, ultimo_day)
 
-        main_path = self.getset_folderspath()
-        this_path = self.pathit(main_path, excelfolder, fncompt)
-        return this_path
+        weekday = business_date.weekday()
+        while weekday > 4:
+            now_day = business_date.day
+            business_date = business_date.replace(day=now_day - 1)
+            weekday = business_date.weekday()
+        returned = business_date.day
 
+        returned -= 1 if month == 12 else returned
+        return returned
 
-NewSetPaths().files_get_anexos_v3(r'Dívidas_Simples_CRB', compt='01-2021')
+# NewSetPaths().files_get_anexos_v3(r'Dívidas_Simples_CRB', compt='01-2021')

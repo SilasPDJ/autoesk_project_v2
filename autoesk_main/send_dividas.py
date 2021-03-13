@@ -4,7 +4,7 @@ from imports import EmailExecutor
 
 class SendDividas(EmailExecutor):
 
-    def __init__(self):
+    def __init__(self, compt=None):
         import pandas as pd
         super().__init__()
 
@@ -20,8 +20,10 @@ class SendDividas(EmailExecutor):
         print('VENCIMENTO DÍVIDAS: ', self.venc_boletos)
 
         sh_names = ['_Dívidas']
+        if compt is None:
+            compt = super().get_compt_only()
+        excel_file_name = super().excel_file_path()
 
-        excel_compt, excel_file_name = self.set_get_compt_file(-1)
         for sh_name in sh_names:
             # agora eu posso fazer downloalds sem me preocupar tendo a variável path
             mshExcelFile = pd.ExcelFile(excel_file_name)
@@ -52,10 +54,10 @@ class SendDividas(EmailExecutor):
                     # FUNCIONA PRA CONTAR PRO MES Q VEM VALIDADO COM ANO
 
                     dividas_pdf_files = self.files_get_anexos_v3("Dívidas_Simples_" + CLIENTE, file_type='pdf',
-                                                                 compt=(excel_compt, excel_file_name), upload=True)
+                                                                 compt=compt, upload=True)
                     # o arg do param em wexplorer_tup (0) significa o mes atual.
                     dividas_png_files = self.files_get_anexos_v3("Dívidas_Simples_" + CLIENTE, file_type='png',
-                                                                 compt=(excel_compt, excel_file_name), upload=True)
+                                                                 compt=compt, upload=True)
                     # Na dúvida, melhor settar...
                     # após anexar...
 

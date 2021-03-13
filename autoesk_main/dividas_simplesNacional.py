@@ -12,9 +12,6 @@ class Dividas(WDShorcuts, NewSetPaths, ExcelToData):
     def __init__(self):
         print('filespathteste')
         """
-        :param compt_file: from GUI
-
-        # remember past_only arg from self.get_atual_competencia
         """
         import pandas as pd
         from default.webdriver_utilities.pre_drivers import pgdas_driver

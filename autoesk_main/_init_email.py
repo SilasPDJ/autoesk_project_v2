@@ -1,4 +1,4 @@
-from imports import WDShorcuts, ExcelToData, EmailsDateScrap
+from imports import ExcelToData, EmailsDateScrap, HasJson
 from _new_set_paths import NewSetPaths
 
 import json
@@ -7,9 +7,8 @@ import os
 # from smtp_project import *
 
 
-class EmailExecutor(EmailsDateScrap, NewSetPaths, ExcelToData):
+class EmailExecutor(EmailsDateScrap, NewSetPaths, ExcelToData, HasJson):
     def __init__(self):
-        super().__init__()
         self.server_mail, self.server_pass = self.create_my_login_file()
 
     def create_my_login_file(self):
