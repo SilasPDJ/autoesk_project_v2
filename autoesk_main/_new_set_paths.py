@@ -164,7 +164,7 @@ class NewSetPaths(Dirs, Now):
         print(br1st, brlast)
         return br1st, brlast
 
-    def files_get_anexos_v3(self, client, file_type='pdf', compt=None, upload=False):
+    def files_get_anexos_v3(self, client, file_type='pdf', compt=None, upload=True):
         """
         :param client: nome da pasta onde estão os arquivos organizados por data dd-mm-yyyy
         :param file_type: file annexed type
@@ -186,9 +186,10 @@ class NewSetPaths(Dirs, Now):
                                  for fname in os.listdir(dir_searched_now) if fname.lower().endswith(file_type)]
 
         for fname in list_checked_returned:
-            if upload:
+            if not upload:
                 file_opened = MIMEApplication(open(fname, 'rb').read())
-                file_opened.add_header('Content-Disposition', 'attachment', filename=fname)
+                fname_title = self.path_leaf(fname)
+                file_opened.add_header('Content-Disposition', 'attachment', filename=fname_title)
                 pdf_files.append(file_opened)
             else:
                 pdf_files.append(f'{fname}')

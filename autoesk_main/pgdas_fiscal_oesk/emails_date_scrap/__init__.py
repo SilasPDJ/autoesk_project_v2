@@ -3,8 +3,8 @@ class EmailsDateScrap:
     def vencimento_das(self):
         # pega o vencimento do site pra puxar em outro lugar, muito legal
         if self.check_venc_precisao():
-            return '22/02/2021'
-            # return self.das_venc_data()[0]
+            # return '22/02/2021'
+            return self.das_venc_data()[0]
 
         return self.__calcula_venc_precisao()
 

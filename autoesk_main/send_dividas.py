@@ -1,86 +1,85 @@
+# from default import NewSetPaths, ExcelToData
+
 from imports import EmailExecutor
-# from smtp_project import *
+from _new_set_json import MakeJson
+import json
 
 
-class SendDividas(EmailExecutor):
-
+class SendDividas(EmailExecutor, MakeJson):
     def __init__(self, compt=None):
+        """
+        :param compt: mm-yyyy; mm/yyyy
+        """
         import pandas as pd
-        super().__init__()
-
-        # self.compt_setted = self.get_compt_only(-11, 1, past_only=False)
-
-        # venc_dividas = self.das_venc_data()[3]
-
-
-
-        # self.venc_boletos = self.get_dividas_vencimento(self.compt_setted)
         self.venc_boletos = self.vencimento_dividas()
-
         print('VENCIMENTO DÍVIDAS: ', self.venc_boletos)
+        here_sh_names = ['_Dívidas']
 
-        sh_names = ['_Dívidas']
         if compt is None:
             compt = super().get_compt_only()
         excel_file_name = super().excel_file_path()
+        MakeJson.__init__(self, compt, excel_file_name, here_sh_names)
+        EmailExecutor().__init__()
 
-        for sh_name in sh_names:
-            # agora eu posso fazer downloalds sem me preocupar tendo a variável path
-            mshExcelFile = pd.ExcelFile(excel_file_name)
-            # input(mshExcelFile.sheet_names)
-            msh = mshExcelFile.parse(sheet_name=str(sh_name))
-            col_str_dic = {column: str for column in list(msh)}
-            msh = mshExcelFile.parse(sheet_name=str(sh_name), dtype=col_str_dic)
-            READ = self.le_excel_each_one(msh)
-            self.after_READ = self.readnew_lista(READ, False)
-            after_READ = self.after_READ
+        for counter, each_dict in enumerate(self.read_from_json()):
+            counter = str(counter)
+            custom_values = list(each_dict.values())
+            _cliente, _cnpj, _cpf, _ja_declared, _tipo_divida = self.any_to_str(*custom_values[:5])
+            now_email = each_dict['email']
+            _ja_foi_env = each_dict['envio'].upper().strip()
+            _now_spreadsheet = each_dict["spreadsheet"]
 
-            for i, CNPJ in enumerate(after_READ['CNPJ']):
-                # ####################### A_Main INTELIGENCIA EXCEL ESTÁ SEM OS SEM MOVIMENTOS NO MOMENTO
 
-                CLIENTE = after_READ['Razão Social'][i]
-                JA_DECLARED = after_READ['Declarado'][i].upper().strip()
-                # CodSim = after_READ['Código Simples'][i]
-                # CPF = after_READ['CPF'][i]
-                # icms_or_iss = sh_names[sh_names.index(sh_name)]
-                JA_FOI_ENV = after_READ['envio'][i].upper().strip()
-                now_email = after_READ['email'][i]
+            if _ja_declared in ['S', 'OK', 'FORA'] and _ja_foi_env not in ['S', 'OK']:
+                print(now_email)
+                # print(f'VALOR: {VALOR}')
+                print(f'_cliente: {_cliente}')
+                # input(self.set_compt_only(-11, 1, past_only=False))
+                # FUNCIONA PRA CONTAR PRO MES Q VEM VALIDADO COM ANO
 
-                if JA_DECLARED in ['S', 'OK', 'FORA'] and JA_FOI_ENV not in ['S', 'OK']:
-                    print(now_email)
-                    # print(f'VALOR: {VALOR}')
-                    print(f'CLIENTE: {CLIENTE}')
-                    # input(self.set_compt_only(-11, 1, past_only=False))
-                    # FUNCIONA PRA CONTAR PRO MES Q VEM VALIDADO COM ANO
+                dividas_pdf_files = self.files_get_anexos_v3("Dívidas_Simples_" + _cliente, file_type='pdf',
+                                                             compt=compt, upload=False)
+                qtd_arquivos = len(dividas_pdf_files)
+                mail_header = f"com vencimento previsto para o dia: {self.venc_boletos.replace('-', '/')}"
+                mail_header = f"Parcelamentos, {'boleto' if qtd_arquivos == 1 else 'boletos'} {mail_header}"
+                print('titulo: ', mail_header)
 
-                    dividas_pdf_files = self.files_get_anexos_v3("Dívidas_Simples_" + CLIENTE, file_type='pdf',
-                                                                 compt=compt, upload=True)
-                    # o arg do param em wexplorer_tup (0) significa o mes atual.
-                    dividas_png_files = self.files_get_anexos_v3("Dívidas_Simples_" + CLIENTE, file_type='png',
-                                                                 compt=compt, upload=True)
-                    # Na dúvida, melhor settar...
-                    # após anexar...
+                message = self.mail_dividas_msg(_cliente, _cnpj, len(dividas_pdf_files))
+                # print(message)
+                das_message = self.write_message(message)
 
-                    qtd_arquivos = len(dividas_pdf_files)
-                    mail_header = f"com vencimento previsto para o dia: {self.venc_boletos.replace('-', '/')}"
-                    mail_header = f"Parcelamentos, {'boleto' if qtd_arquivos == 1 else 'boletos'} {mail_header}"
-                    print('titulo: ', mail_header)
+                # # 'silsilinhas@gmail.com'
+                now_email = 'silsilinhas@gmail.com'
+                try:
+                    # self.main_send_email(now_email, mail_header, das_message, dividas_pdf_files)
+                    each_dict['envio'] = 'S'
+                    for atualiza in self.dumps_from(_now_spreadsheet, get_instead=True):
+                        atualiza['envio'][counter] = 'S'
+                        self.dump_json(atualiza, self.dumps_from__now_path)
+                        with open(self.dumps_from__now_path, encoding='utf-8') as dfnp:
+                            data = dfnp.read()
+                            data_save = json.loads(data,)
+                            data_save = pd.DataFrame(data_save, dtype=str)
 
-                    list_imgs = self.dividas_mime_img(dividas_png_files)
-                    message = self.mail_dividas_msg(CLIENTE, CNPJ, len(dividas_pdf_files))
-                    print(message)
-                    das_message = self.write_message(message)
+                            data_save.to_excel(f'pgdas_fiscal_oesk/data_clients_files/output-{_now_spreadsheet}.xlsx',
+                                               encoding='utf-8-sig')
+                    input('passou')
 
-                    dividas_files = dividas_pdf_files + list_imgs
-                    self.main_send_email(now_email, mail_header, das_message, dividas_pdf_files)
-                    # 'silsilinhas@gmail.com'
-                    # self.main_send_email('silsilinhas@gmail.com', mail_header, das_message, dividas_files)
+                except Exception as e:
+                    raise e
 
-                    """a partir do terceiro argumento, só há mensagens attachedas"""
+                    # input('test')
+
+                ""
+                # ###########################
+                # Vou registrar o each_dict no b
+                # ###########################
+
+                """a partir do terceiro argumento, só há mensagens attachedas"""
 
     def mail_dividas_msg(self, client, cnpj, main_anx_len=0):
 
-        colours = self.load_json('zlist_colours.json')
+        colours = self.zlist_colours_emails()
         red, blue, money, parc_style = \
             self.wcor(colours[114]), self.wcor('blue'), ' style="background-color:yellow; color:green"', \
             'style="background-color:yellow; color:red"'
@@ -131,3 +130,6 @@ Este e-mail é automático. Por gentileza, cheque o nome e o CNPJ ({ntt('span'+r
                 imgsimgs.append(img)
         return imgsimgs
 # depois o send email vai emglobar tudo que ta em package init_email... # no projeto final
+
+
+SendDividas()

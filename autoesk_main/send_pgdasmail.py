@@ -5,19 +5,18 @@ from _new_set_json import MakeJson
 
 
 class PgDasmailSender(EmailExecutor, MakeJson):
-    def __init__(self, fname, compt=None):
+    def __init__(self, compt=None):
         """
-        :param fname: nome do json
-        :param compt: compt...
+        :param compt: mm-yyyy; mm/yyyy
         """
-        from default.interact import press_keys_b4, press_key_b4
 
         self.venc_das = self.vencimento_das()
-        # sh_names = 'sem_mov', 'G5_ISS', 'G5_ICMS'
+        here_sh_names = 'sem_mov', 'G5_ISS', 'G5_ICMS'
         if compt is None:
             compt = super().get_compt_only()
         excel_file_name = super().excel_file_path()
-        MakeJson.__init__(self, compt, excel_file_name)
+        MakeJson.__init__(self, compt, excel_file_name, here_sh_names)
+        EmailExecutor().__init__()
 
         mail_header = f"Fechamentos para apuração do imposto PGDAS, competência: {compt.replace('-', '/')}"
         print('titulo: ', mail_header)
@@ -47,22 +46,21 @@ class PgDasmailSender(EmailExecutor, MakeJson):
                     print(now_email)
                     print(f'VALOR: {_valor}')
                     print(f'CLIENTE: {_cliente}')
-                    message = self.mail_pgdas_msg(_cliente, _cnpj, _icms_or_iss, _valor)
+                    self.message = self.mail_pgdas_msg(_cliente, _cnpj, _icms_or_iss, _valor)
                     # input(message)
-                    das_message = self.write_message(message)
+                    das_message = self.write_message(self.message)
 
-                    das_anx_files = self.files_get_anexos_v3(_cliente, file_type='pdf', compt=compt)
-                    # self.main_send_email(now_email, mail_header, das_message, das_anx_files)
-                    input('security, silsilinhas')
-                    self.main_send_email('silsilinhas@gmail.com', mail_header, das_message, das_anx_files)
+                    das_anx_files = self.files_get_anexos_v3(_cliente, file_type='pdf', compt=compt, upload=False)
+                    input(f'\033[1;34mSECURITY EMAIL VAI ENVIAR PARA {now_email}\033[m')
+                    self.main_send_email(now_email, mail_header, das_message, das_anx_files)
+                    # input('security, silsilinhas')
+                    # self.main_send_email('silsilinhas@gmail.com', mail_header, das_message, das_anx_files)
                     """a partir do terceiro argumento, só há mensagens attachedas"""
-
+                    input('teste after silsilinahs')
                     print('Enviado...')
 
     def mail_pgdas_msg(self, client, cnpj, tipo_das, valor):
-        path_colours = os.path.dirname(__file__)
-        path_colours = os.path.join(path_colours, 'default/data_treatment')
-        colours = self.load_json(path_colours+'/zlist_colours.json')
+        colours = self.zlist_colours_emails()
 
         red, blue, money = self.wcor(colours[114]), self.wcor('blue'), 'style="background-color:yellow; color:green"'
         ntt = self.tag_text
@@ -106,7 +104,5 @@ Este e-mail é automático. Por gentileza, cheque o nome e o CNPJ ({ntt('span'+r
         """
         return full_mensagem
 
-import os
-fname = f'{os.path.dirname(__file__)}/pgdas_fiscal_oesk/data_clients_files/example_iss.json'
 
-PgDasmailSender(fname)
+# PgDasmailSender()

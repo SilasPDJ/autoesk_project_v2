@@ -49,6 +49,17 @@ class Dirs:
         from shutil import move
         move(where_from, destiny)
 
+    @staticmethod
+    def path_leaf(path):
+        """
+        :param path: Any path
+        :return: opposite of os.path.dirname, so returns the file path
+        ps: returns False if path has no file
+        """
+        if not os.path.isfile(path):
+            return False
+        head, tail = os.path.split(path)
+        return tail or os.path.basename(head)
 
 class HasJson:
     @staticmethod
@@ -65,17 +76,15 @@ class HasJson:
             return False
 
     @staticmethod
-    def dump_json(objeto, file, ensure_ascii=False):
+    def dump_json(objeto, file):
         """
         :param object objeto:
         :param file:
-        :param ensure_ascii: False -> utf-8, True -> ensure-it
+        # :param ensure_ascii: False -> utf-8, True -> ensure-it
         :return:
 
         # object engloba list, tuple, dict
         """
-        with open(file, 'w') as f:
-            if not ensure_ascii:
-                json.dump(objeto, f, ensure_ascii=False)
-            else:
-                json.dump(objeto, f)
+        with open(file, 'w', encoding='utf-8') as file:
+            json.dump(objeto, file, ensure_ascii=False, indent=8)
+

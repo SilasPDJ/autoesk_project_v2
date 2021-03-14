@@ -1,16 +1,14 @@
 from imports import ExcelToData, EmailsDateScrap, HasJson
 from _new_set_paths import NewSetPaths
-
+import smtplib
 import json
 import os
-
+from email import policy
+from email.parser import Parser
 # from smtp_project import *
 
 
 class EmailExecutor(EmailsDateScrap, NewSetPaths, ExcelToData, HasJson):
-    def __init__(self):
-        self.server_mail, self.server_pass = self.create_my_login_file()
-
     def create_my_login_file(self):
         my_email, my_pass = '', ''
         thispath = os.path.dirname(__file__)
@@ -47,7 +45,7 @@ class EmailExecutor(EmailsDateScrap, NewSetPaths, ExcelToData, HasJson):
         from email.mime.multipart import MIMEMultipart
         from email.header import Header
 
-        sm, sp = self.server_mail, self.server_pass
+        sm, sp = self.create_my_login_file()
         with smtplib.SMTP('smtp.gmail.com', 587) as server:
             server.ehlo()
             server.starttls()
@@ -56,15 +54,13 @@ class EmailExecutor(EmailsDateScrap, NewSetPaths, ExcelToData, HasJson):
             envia_mail = MIMEMultipart('mixed')
             envia_mail['Subject'] = Header(header, 'utf-8')
             envia_mail.attach(attached_msg)
-            try:
+            if pdf_files is not None:
                 for pdf in pdf_files:
                     envia_mail.attach(pdf)
-            except ValueError:
-                pass
 
                 # "anexa" mensagens, anexos, etc
 
-            server.sendmail(self.server_mail, to, envia_mail.as_string())
+            server.sendmail(sm, to, envia_mail.as_string())
 
         # mimemultipart mixed or alternative
 
@@ -93,6 +89,12 @@ class EmailExecutor(EmailsDateScrap, NewSetPaths, ExcelToData, HasJson):
         fecha = tag.split('style')[0].strip()
         new_text = f'<{tag}>{text}</{fecha}>'
         return new_text
+
+    def zlist_colours_emails(self):
+        path_colours = os.path.dirname(__file__)
+        path_colours = os.path.join(path_colours, 'default/data_treatment')
+        colours = self.load_json(path_colours+'/zlist_colours.json')
+        return colours
 
     def hora_mensagem(self):
         from datetime import datetime as dt

@@ -181,7 +181,7 @@ class Fantasia(NewSetPaths, ExcelToData):
                         """save in adobe"""
 
     def get_xml(self, cliente):
-        b = self.files_get_anexos_v3(cliente, file_type='xml', upload=False)
+        b = self.files_get_anexos_v3(cliente, file_type='xml')
         b = b[0]
         b = b.split('\\')
         file = f'\\\\{b[-1]}'
