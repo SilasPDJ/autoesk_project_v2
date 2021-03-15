@@ -2,20 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b24ff710-6f04-4662-b083-e6d15a5baceb" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/autoesk_main/_new_set_json_v2.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/autoesk_main/send_test_email.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/autoesk_main/test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autoesk_main/_init_email.py" beforeDir="false" afterPath="$PROJECT_DIR$/autoesk_main/_init_email.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/autoesk_main/_new_set_json.py" beforeDir="false" afterPath="$PROJECT_DIR$/autoesk_main/_new_set_json.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autoesk_main/_new_set_json_v2.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/autoesk_main/_new_set_paths.py" beforeDir="false" afterPath="$PROJECT_DIR$/autoesk_main/_new_set_paths.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autoesk_main/default/sets/pathmanager.py" beforeDir="false" afterPath="$PROJECT_DIR$/autoesk_main/default/sets/pathmanager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autoesk_main/pgdas_fiscal_oesk/emails_date_scrap/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/autoesk_main/pgdas_fiscal_oesk/emails_date_scrap/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/autoesk_main/send_dividas.py" beforeDir="false" afterPath="$PROJECT_DIR$/autoesk_main/send_dividas.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autoesk_main/send_pgdasmail.py" beforeDir="false" afterPath="$PROJECT_DIR$/autoesk_main/send_pgdasmail.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autoesk_main/silas_abre_g5_loop_v6_finally.py" beforeDir="false" afterPath="$PROJECT_DIR$/autoesk_main/silas_abre_g5_loop_v6_finally.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/autoesk_main/silas_abre_g5_loop_v7_finally.py" beforeDir="false" afterPath="$PROJECT_DIR$/autoesk_main/silas_abre_g5_loop_v7_finally.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -71,7 +62,7 @@
       <recent name="H:\MY_PROJECTS\autoesk_project\autoesk_main\default\webdriver_utilities" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.send_dividas">
+  <component name="RunManager" selected="Python.silas_abre_g5_loop_v7_finally">
     <configuration name="__correct_json" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="autoesk_project" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -106,27 +97,6 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/autoesk_main/_init_email.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="_new_set_json_backup" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="autoesk_project" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/autoesk_main" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/autoesk_main/_new_set_json_backup.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -198,13 +168,34 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="silas_abre_g5_loop_v7_finally" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="autoesk_project" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/autoesk_main" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/autoesk_main/silas_abre_g5_loop_v7_finally.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.silas_abre_g5_loop_v7_finally" />
         <item itemvalue="Python.send_dividas" />
         <item itemvalue="Python.__correct_json" />
         <item itemvalue="Python.send_pgdasmail" />
         <item itemvalue="Python._init_email" />
-        <item itemvalue="Python._new_set_json_backup" />
       </list>
     </recent_temporary>
   </component>

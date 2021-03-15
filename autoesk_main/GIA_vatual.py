@@ -3,6 +3,8 @@ from imports import Keys, By, WebDriverWait, expected_conditions
 from imports import TimeoutException, ElementClickInterceptedException, NoSuchElementException, NoAlertPresentException
 from imports import activate_window, press_key_b4, foritab
 from imports import contmatic_select_by_name
+from imports import pgdas_driver
+
 
 from _new_set_paths import NewSetPaths
 
@@ -20,8 +22,9 @@ class GIA(WDShorcuts, NewSetPaths, ExcelToData):
 
     def __init__(self):
         menuX, menuY = 20, 27
-        compt = super().get_compt_only()
+        self.compt_used = super().get_compt_only()
         excel_file_name = super().excel_file_path()
+
         mshExcelFile = pd.ExcelFile(excel_file_name)
 
         def fecha_janela_contribuintes_gia():
@@ -65,7 +68,7 @@ class GIA(WDShorcuts, NewSetPaths, ExcelToData):
                         fecha_janela_contribuintes_gia()
                     except IndexError:
                         print('Não precisei fechar')
-                    self.pt1_gia_software(ie, compt)
+                    self.pt1_gia_software(ie, self.compt_used)
 
                     pygui.doubleClick(menuX+35, menuY)
                     # consistir
@@ -126,11 +129,10 @@ class GIA(WDShorcuts, NewSetPaths, ExcelToData):
                     # pygui.hotkey('enter')
                     # ############################################ parei daqui
 
-
     def save_save_img2pdf(self):
         from PIL import Image
         path1 = f'{self._client_path}/GiaScreenShoot.png'
-        path2 = f'{self._client_path}/Recibo_{self.compt_and_filename()[0]}.pdf'
+        path2 = f'{self._client_path}/Recibo_{self.compt_used}.pdf'
         self.driver.save_screenshot(path1)
         image1 = Image.open(path1)
         try:
@@ -145,8 +147,6 @@ class GIA(WDShorcuts, NewSetPaths, ExcelToData):
         pathinit += f'\\{os.listdir(pathinit)[0]}'
         # copy(r"C:\Users\User\Documents\SEFAZ\GIA\TNormal\{}".format(os.listdir(r"C:\Users\User\Documents\SEFAZ\GIA\TNormal")[0]), r"C:\Users\user\OneDrive\_FISCAL-2021\2021\01-2021\GIA_Tharles Marli")
         copy(pathinit, self._client_path)
-
-
 
     def pt1_gia_software(self, ie, cpt_write):
         cpt_write = "".join(cpt_write.split('-'))

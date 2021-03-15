@@ -130,10 +130,10 @@ class NewSetPaths(Dirs, Now):
         salva_path = Dirs.pathit(*path_final)
         return salva_path
 
-    def first_and_last_day_compt(self, insyear=None, sep='/'):
+    def first_and_last_day_compt(self, compt=None, sep='/'):
         """
         ELE JÁ PEGA O ANTERIOR MAIS PROX
-        :param str insyear:(competencia or whatever). Defaults then call cls.get_compt_only() as default
+        :param str compt:(competencia or whatever). Defaults then call cls.get_compt_only() as default
         :param sep: separates month/year
         # É necessario o will_be pois antes dele é botado ao contrário
         # tipo: 20200430
@@ -143,13 +143,10 @@ class NewSetPaths(Dirs, Now):
         from datetime import date, timedelta
         from dateutil.relativedelta import relativedelta
 
-        if insyear is None:
-            insyear = self.get_compt_only()
-
-        compt = insyear
+        if compt is None:
+            compt = self.get_compt_only()
         ill_split = ''.join([v for v in compt if v not in '0123456789'])
         mes, ano = compt.split(ill_split)
-
         mes, ano = int(mes), int(ano)
         #  - timedelta(days=1)
         # + relativedelta(months=1)

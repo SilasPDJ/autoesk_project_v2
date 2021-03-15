@@ -28,8 +28,6 @@ class Fantasia(NewSetPaths, ExcelToData):
 
     def __init__(self):
         """
-        :param compt_file: from GUI
-
         # remember past_only arg from self.get_atual_competencia
         """
         import pandas as pd
@@ -37,7 +35,8 @@ class Fantasia(NewSetPaths, ExcelToData):
         # O vencimento DAS(seja pra qual for a compt) está certo, haja vista que se trata do mes atual
 
         sh_names = possible
-        compt_file = super().get_compt_only()
+        self.compt_used = super().get_compt_only()
+        # datageral = self.first_and_last_day_compt(self.compt_used, '/')
         excel_file_name = super().excel_file_path()
 
         # ###############################
@@ -62,8 +61,6 @@ class Fantasia(NewSetPaths, ExcelToData):
                 CPF = after_READ['CPF'][i]
                 cont_ret_n_ret = i
 
-                datageral = self.first_and_last_day_compt('/')[1]
-                # print(datageral)
                 if CLIENTE == '':
                     break
 
@@ -76,10 +73,10 @@ class Fantasia(NewSetPaths, ExcelToData):
                     # Se tem 3valores[excel], tem XML. Se não tem, não tem
                     # (pois o xml e excel vem do ginfess_download)....
 
-                    registronta = self.registronta(CLIENTE, compt_file)
+                    registronta = self.registronta(CLIENTE, self.compt_used)
                     print(CLIENTE)
                     if meus_3_valores_atuais and registronta:
-                        all_xls_inside = self.files_get_anexos_v3(CLIENTE, file_type='xlsx', compt=compt_file)
+                        all_xls_inside = self.files_get_anexos_v3(CLIENTE, file_type='xlsx', compt=self.compt_used)
                         relacao_notas = all_xls_inside[0] if len(all_xls_inside) == 1 else IndexError()
                         self.activating_client(self.formatar_cnpj(CNPJ))
                         # Agora vai ser por cnpj...
@@ -247,7 +244,7 @@ class Fantasia(NewSetPaths, ExcelToData):
         sleep(.7)
         # ativa empresa
 
-        comp = self.first_and_last_day_compt('')[1]
+        comp = self.first_and_last_day_compt(self.compt_used, '-')[1]
         pygui.write(comp)
 
         foritab(6, 'tab') # PESQUISA

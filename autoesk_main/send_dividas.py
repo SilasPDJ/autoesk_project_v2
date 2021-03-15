@@ -29,7 +29,6 @@ class SendDividas(EmailExecutor, MakeJson):
             _ja_foi_env = each_dict['envio'].upper().strip()
             _now_spreadsheet = each_dict["spreadsheet"]
 
-
             if _ja_declared in ['S', 'OK', 'FORA'] and _ja_foi_env not in ['S', 'OK']:
                 print(now_email)
                 # print(f'VALOR: {VALOR}')
@@ -50,26 +49,7 @@ class SendDividas(EmailExecutor, MakeJson):
 
                 # # 'silsilinhas@gmail.com'
                 now_email = 'silsilinhas@gmail.com'
-                try:
-                    # self.main_send_email(now_email, mail_header, das_message, dividas_pdf_files)
-                    each_dict['envio'] = 'S'
-                    for atualiza in self.dumps_from(_now_spreadsheet, get_instead=True):
-                        atualiza['envio'][counter] = 'S'
-                        self.dump_json(atualiza, self.dumps_from__now_path)
-                        with open(self.dumps_from__now_path, encoding='utf-8') as dfnp:
-                            data = dfnp.read()
-                            data_save = json.loads(data,)
-                            data_save = pd.DataFrame(data_save, dtype=str)
-
-                            data_save.to_excel(f'pgdas_fiscal_oesk/data_clients_files/output-{_now_spreadsheet}.xlsx',
-                                               encoding='utf-8-sig')
-                    input('passou')
-
-                except Exception as e:
-                    raise e
-
-                    # input('test')
-
+                # self.main_send_email(now_email, mail_header, das_message, dividas_pdf_files)
                 ""
                 # ###########################
                 # Vou registrar o each_dict no b
