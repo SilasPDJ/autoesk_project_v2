@@ -50,7 +50,6 @@ class EmailExecutor(EmailsDateScrap, NewSetPaths, ExcelToData, HasJson):
             server.ehlo()
             server.starttls()
             server.login(sm, sp)
-
             envia_mail = MIMEMultipart('mixed')
             envia_mail['Subject'] = Header(header, 'utf-8')
             envia_mail.attach(attached_msg)

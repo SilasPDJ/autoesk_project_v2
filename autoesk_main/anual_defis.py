@@ -1,31 +1,36 @@
+from imports import WDShorcuts
+from imports import press_key_b4, activate_window, tk_msg
+from imports import TimeoutException, ElementClickInterceptedException, NoSuchElementException, NoAlertPresentException
+from imports import Keys, By, WebDriverWait, expected_conditions
+from imports import ExcelToData
+
+from _new_set_paths import NewSetPaths
+
+import subprocess
+import os
 from time import sleep
-from default.webdriver_utilities import *
-from default.interact import *
-from smtp_project.init_email import JsonDateWithImprove
-from default.settings import SetPaths
-from default.data_treatment import ExcelToData
+from selenium.webdriver.support.ui import Select
 
 
 # dale
-
-class Defis(WDShorcuts, SetPaths, ExcelToData):
-    def __init__(self, compt_file=None):
+class Defis(WDShorcuts, NewSetPaths, ExcelToData):
+    def __init__(self, compt=None):
         """
-        :param compt_file: from GUI
+        :param compt: from GUI
 
         # remember past_only arg from self.get_atual_competencia
         """
         import pandas as pd
         from default.webdriver_utilities.pre_drivers import pgdas_driver
-
         # O vencimento DAS(seja pra qual for a compt) está certo, haja vista que se trata do mes atual
 
         sh_names = ['DEFIS']
-        if compt_file is None:
-            compt_file = self.compt_and_filename()
-            compt, excel_file_name = compt_file
-        else:
-            compt, excel_file_name = compt_file
+        sh_name = sh_names[0]
+
+        if compt is None:
+            compt = super().get_compt_only()
+
+        excel_file_name = super().excel_file_path()
 
         COMPT = compt = f"DEFIS_{self.y()}"
         # transcrevendo compt para que não seja 02/2021
@@ -35,55 +40,82 @@ class Defis(WDShorcuts, SetPaths, ExcelToData):
         excel_file_name += f'/DEFIS-anual.xlsx'
         pdExcelFile = pd.ExcelFile(excel_file_name)
 
-        for sh_name in sh_names:
-            # agora eu posso fazer downloalds sem me preocupar tendo a variável path
+        msh = pdExcelFile.parse(sheet_name=str(sh_name))
+        col_str_dic = {column: str for column in list(msh)}
 
-            msh = pdExcelFile.parse(sheet_name=str(sh_name))
-            col_str_dic = {column: str for column in list(msh)}
+        msh = pdExcelFile.parse(sheet_name=str(sh_name), dtype=col_str_dic)
+        READ = self.le_excel_each_one(msh)
+        self.after_READ = self.readnew_lista(READ, False)
 
-            msh = pdExcelFile.parse(sheet_name=str(sh_name), dtype=col_str_dic)
-            READ = self.le_excel_each_one(msh)
-            self.after_READ = self.readnew_lista(READ, False)
-            after_READ = self.after_READ
+        msh_socio = pdExcelFile.parse(sheet_name='Socios')
+        col_str_dic = {column: str for column in list(msh_socio)}
+        msh_socio = pdExcelFile.parse(sheet_name='Socios', dtype=col_str_dic)
+        self.after_socio = self.readnew_lista(self.le_excel_each_one(msh_socio))
 
-            for i, CNPJ in enumerate(after_READ['CNPJ']):
-                # ####################### A INTELIGENCIA EXCEL ESTÁ SEM OS SEM MOVIMENTOS NO MOMENTO
-                _cliente = after_READ['Razão Social'][i]
-                _ja_declared = after_READ['Declarado'][i].upper().strip()
-                _cod_sim = after_READ['Código Simples'][i]
-                _cpf = after_READ['CPF'][i]
-                _cert_or_login = after_READ['CERTORLOGIN'][i]
+        SK = list(self.after_socio.keys())
+        #  ACHEI FINALMENTE O JEITO RESPONSIVO DE DECLARAR PRA NÃO FICAR TENDO QUE ESCREVER POR EXTENSO
 
-                # Defis exclusivos
-                _dirf = after_READ['DIRF'][i]
+        cont_soc = 0
+        for i, CNPJ in enumerate(self.after_READ['CNPJ']):
+            _cliente = self.empresa_now = self.after_READ['Razão Social'][i]
+            _ja_declared = self.after_READ['Declarado'][i].upper().strip()
+            _cod_sim = self.after_READ['Código Simples'][i]
+            _cpf = self.after_READ['CPF'][i]
+            _cert_or_login = self.after_READ['CERTORLOGIN'][i]
 
-                if _cliente == '':
-                    break
-                self.client_path = self._files_path_defis(_cliente, tup_path=(COMPT, excel_file_name))
-                if _ja_declared not in ['S', 'OK', 'FORA']:
+            # Defis exclusivos
+            _dirf = self.after_READ['DIRF'][i]
+            # +2 Pois começa da linha 2, logo o excel está reconhendo isso como index
+            while int(self.after_socio[SK[-4]][cont_soc])-2 != i:
+                cont_soc += 1
+            __ate_soc = self.after_socio[SK[-3]][cont_soc]
+            __ate_soc = int(__ate_soc) + cont_soc
 
-                    __client_path = self.client_path
-                    input(self.client_path)
-                    self.driver = pgdas_driver(__client_path)
-                    driver = self.driver
-                    super().__init__(driver)
+            self.socios_now__cnpj = self.after_socio[SK[0]][cont_soc:__ate_soc]
+            self.socios_now__cpf = self.after_socio[SK[1]][cont_soc:__ate_soc]
+            self.socios_now__nome = self.after_socio[SK[2]][cont_soc:__ate_soc]
+            self.socios_now__cota = self.after_socio[SK[3]][cont_soc:__ate_soc]
+            self.socios_now__tipo = self.after_socio[SK[5]][cont_soc:__ate_soc]
 
-                    if _cert_or_login == 'certificado':
-                        self.loga_cert()
-                        # loga ECAC, Insere CNPJ
-                        self.change_ecac_client(CNPJ)
+            self.client_path = self.files_pathit(_cliente, COMPT, )
+            if _ja_declared not in ['S', 'OK', 'FORA']:
+                print('-' * 60)
+                print(f'CNPJ: {CNPJ}, {CNPJ.strip()==self.socios_now__cnpj[0]}')
+                self.the_print()
 
-                        self.current_url = driver.current_url
-                        self.opta_script() if self.m() == 12 else None
+                __client_path = self.client_path
+                self.driver = pgdas_driver(__client_path)
+                now_process = subprocess.Popen(f'explorer {__client_path}')
+                driver = self.driver
+                super().__init__(driver)
 
-                    else:
-                        self.loga_simples(CNPJ, _cpf, _cod_sim, _cliente)
-                        self.current_url = driver.current_url
-                        self.opta_script() if self.m() == 12 else None
+                if _cert_or_login == 'certificado':
+                    self.loga_cert()
+                    # loga ECAC, Insere CNPJ
+                    self.change_ecac_client(CNPJ)
 
-                    print('\033[1;31m DIGITE F2 p/ prosseguir \033[m')
-                    which_one = press_keys_b4('f2')
+                    self.current_url = driver.current_url
+                    self.opta_script() if self.m() == 12 else None
 
+                else:
+                    self.loga_simples(CNPJ, _cpf, _cod_sim, _cliente)
+                    self.current_url = driver.current_url
+                    self.opta_script() if self.m() == 12 else None
+
+                driver.get('https://www8.receita.fazenda.gov.br/SimplesNacional/Aplicacoes/ATSPO/defis.app/entrada.aspx')
+                while True:
+                    try:
+                        WebDriverWait(self.driver, 10).until(expected_conditions.presence_of_element_located((By.TAG_NAME, 'input')))
+                        my_radios_bt = driver.find_elements_by_name('ctl00$conteudo$AnoC')
+                        my_radios_bt[-2].click()
+                        driver.find_element_by_id('ctl00_conteudo_lnkContinuar').click()
+                        break
+                    except TimeoutException:
+                        driver.get('https://sinac.cav.receita.fazenda.gov.br/SimplesNacional/Aplicacoes/ATSPO/defis.app/entrada.aspx')
+
+                print('\033[1;31m DIGITE F8 p/ prosseguir \033[m')
+                which_one = press_key_b4('f8')
+                now_process.kill()
 
     def loga_cert(self):
         """
@@ -91,6 +123,7 @@ class Defis(WDShorcuts, SetPaths, ExcelToData):
         """
         from threading import Thread
         from pyautogui import hotkey
+        from time import sleep
 
         driver = self.driver
         while True:
@@ -328,7 +361,6 @@ class Defis(WDShorcuts, SetPaths, ExcelToData):
             self.get_sub_site('/RegimeApuracao/Optar', self.current_url)
             # driver.execute_script("""window.location.href += '/RegimeApuracao/Optar'""")
 
-            from selenium.webdriver.support.ui import Select
             anocalendario = Select(driver.find_element_by_id('anocalendario'))
 
             anocalendario.select_by_value('2021')
@@ -356,5 +388,31 @@ class Defis(WDShorcuts, SetPaths, ExcelToData):
             driver.get(self.current_url)
             driver.execute_script("""window.location.href += '/declaracao?clear=1'""")
             sleep(2.5)
+
+    def the_print(self):
+
+        len_nome = len(self.socios_now__nome)
+        print(self.empresa_now)
+        print(f'{"CNPJ":<10}{"Nome":>10}{"CPF":>38}{"COTA":>21}{"COTA %":>10}')
+
+        total_calc = sum(int(v) for v in self.socios_now__cota)
+
+        for ins in range(len(self.socios_now__cnpj)):
+
+            soc_cnpj = self.socios_now__cnpj[ins]
+            soc_nome = self.socios_now__nome[ins]
+            soc_cpf = self.socios_now__cpf[ins]
+            soc_cota = self.socios_now__cota[ins]
+            print(f'{soc_cnpj:<16}', end='')
+            print(f'{soc_nome:<{40 - len_nome}}', end='')
+            print(f'{soc_cpf:>9}', end='')
+            print(f'{soc_cota:>10}', end='')
+
+            cota = int(soc_cota) / total_calc
+            print('      ', cota)
+        print(self.socios_now__tipo)
+        print('-' * 60)
+        print()
+
 
 Defis()

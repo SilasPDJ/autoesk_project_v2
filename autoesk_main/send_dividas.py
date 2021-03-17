@@ -18,11 +18,11 @@ class SendDividas(EmailExecutor, MakeJson):
         if compt is None:
             compt = super().get_compt_only()
         excel_file_name = super().excel_file_path()
-        MakeJson.__init__(self, compt, excel_file_name, here_sh_names)
+        MakeJson.__init__(self, compt, excel_file_name)
         EmailExecutor().__init__()
 
-        for counter, each_dict in enumerate(self.read_from_json()):
-            counter = str(counter)
+        for counter, each_dict in enumerate(self.read_from_json(here_sh_names)):
+
             custom_values = list(each_dict.values())
             _cliente, _cnpj, _cpf, _ja_declared, _tipo_divida = self.any_to_str(*custom_values[:5])
             now_email = each_dict['email']
@@ -40,17 +40,18 @@ class SendDividas(EmailExecutor, MakeJson):
                                                              compt=compt, upload=False)
                 qtd_arquivos = len(dividas_pdf_files)
                 mail_header = f"com vencimento previsto para o dia: {self.venc_boletos.replace('-', '/')}"
+                mail_header = mail_header.replace('30', '31')
+
                 mail_header = f"Parcelamentos, {'boleto' if qtd_arquivos == 1 else 'boletos'} {mail_header}"
                 print('titulo: ', mail_header)
 
                 message = self.mail_dividas_msg(_cliente, _cnpj, len(dividas_pdf_files))
                 # print(message)
+
                 das_message = self.write_message(message)
 
                 # # 'silsilinhas@gmail.com'
-                now_email = 'silsilinhas@gmail.com'
-                # self.main_send_email(now_email, mail_header, das_message, dividas_pdf_files)
-                ""
+                self.main_send_email(now_email, mail_header, das_message, dividas_pdf_files)
                 # ###########################
                 # Vou registrar o each_dict no b
                 # ###########################

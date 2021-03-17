@@ -113,7 +113,7 @@ class Fantasia(NewSetPaths, ExcelToData):
                             foritab(15, 'tab')
                             print('Sleeping 2.5 pra enter, enter')
                             sleep(2.5)
-                            foritab(2, 'enter', 1)
+                            foritab(2, 'enter', interval=1)
                             sleep(1)
                             pygui.hotkey('alt', 'f4')
 
@@ -160,7 +160,7 @@ class Fantasia(NewSetPaths, ExcelToData):
 
                         foritab(5, 'enter', interval=.25)
                         # generate pdf
-                        sleep(5)
+                        sleep(7.5)
                         # self.most_recent_file()
                         print('estou contando com o Adobe, pois o PDF do G5 é aberto nele...')
 

@@ -11,18 +11,18 @@ class PgDasmailSender(EmailExecutor, MakeJson):
         """
 
         self.venc_das = self.vencimento_das()
-        here_sh_names = 'sem_mov', 'G5_ISS', 'G5_ICMS'
+        here_sh_names = ['G5_ISS', 'G5_ICMS']
         if compt is None:
             compt = super().get_compt_only()
         excel_file_name = super().excel_file_path()
-        MakeJson.__init__(self, compt, excel_file_name, here_sh_names)
+        MakeJson.__init__(self, compt, excel_file_name)
         EmailExecutor().__init__()
 
         mail_header = f"Fechamentos para apuração do imposto PGDAS, competência: {compt.replace('-', '/')}"
         print('titulo: ', mail_header)
-        for each_dict in self.read_from_json():
-            for k, v in each_dict.items():
-                print(k, v)
+        for each_dict in self.read_from_json(here_sh_names):
+            # for k, v in each_dict.items():
+            #  print(k, v)
 
             custom_values = list(each_dict.values())
             _cliente, _cnpj, _cpf, _cod_simples, _ja_declared = self.any_to_str(*custom_values[:5])
@@ -51,13 +51,13 @@ class PgDasmailSender(EmailExecutor, MakeJson):
                     das_message = self.write_message(self.message)
 
                     das_anx_files = self.files_get_anexos_v3(_cliente, file_type='pdf', compt=compt, upload=False)
-                    input(f'\033[1;34mSECURITY EMAIL VAI ENVIAR PARA {now_email}\033[m')
+                    # now_email = 'silsilinhas@gmail.com'
                     self.main_send_email(now_email, mail_header, das_message, das_anx_files)
                     # input('security, silsilinhas')
                     # self.main_send_email('silsilinhas@gmail.com', mail_header, das_message, das_anx_files)
                     """a partir do terceiro argumento, só há mensagens attachedas"""
-                    input('teste after silsilinahs')
-                    print('Enviado...')
+
+                    print(f'Enviado... p/ {now_email}')
 
     def mail_pgdas_msg(self, client, cnpj, tipo_das, valor):
         colours = self.zlist_colours_emails()
@@ -105,4 +105,4 @@ Este e-mail é automático. Por gentileza, cheque o nome e o CNPJ ({ntt('span'+r
         return full_mensagem
 
 
-# PgDasmailSender()
+PgDasmailSender()
