@@ -3,14 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="b24ff710-6f04-4662-b083-e6d15a5baceb" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autoesk_main/_init_email.py" beforeDir="false" afterPath="$PROJECT_DIR$/autoesk_main/_init_email.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autoesk_main/_new_set_json.py" beforeDir="false" afterPath="$PROJECT_DIR$/autoesk_main/_new_set_json.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autoesk_main/default/webdriver_utilities/Chromedriver/chromedriver.exe" beforeDir="false" afterPath="$PROJECT_DIR$/autoesk_main/default/webdriver_utilities/Chromedriver/chromedriver.exe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autoesk_main/pgdas_fiscal_oesk/DEFIS/_anual_defis.py" beforeDir="false" afterPath="$PROJECT_DIR$/autoesk_main/anual_defis.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autoesk_main/scrap_get_fantasia.py" beforeDir="false" afterPath="$PROJECT_DIR$/autoesk_main/scrap_get_fantasia.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autoesk_main/send_dividas.py" beforeDir="false" afterPath="$PROJECT_DIR$/autoesk_main/send_dividas.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autoesk_main/send_pgdasmail.py" beforeDir="false" afterPath="$PROJECT_DIR$/autoesk_main/send_pgdasmail.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autoesk_main/silas_abre_g5_loop_v7_finally.py" beforeDir="false" afterPath="$PROJECT_DIR$/autoesk_main/silas_abre_g5_loop_v7_finally.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autoesk_main/anual_defis.py" beforeDir="false" afterPath="$PROJECT_DIR$/autoesk_main/anual_defis.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

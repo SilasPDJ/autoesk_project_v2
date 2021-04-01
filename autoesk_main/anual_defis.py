@@ -1,6 +1,7 @@
 from imports import WDShorcuts
 from imports import press_key_b4, activate_window, tk_msg
 from imports import TimeoutException, ElementClickInterceptedException, NoSuchElementException, NoAlertPresentException
+from imports import ActionChains
 from imports import Keys, By, WebDriverWait, expected_conditions
 from imports import ExcelToData
 
@@ -10,7 +11,7 @@ import subprocess
 import os
 from time import sleep
 from selenium.webdriver.support.ui import Select
-
+from selenium.common.exceptions import UnexpectedAlertPresentException
 
 # dale
 class Defis(WDShorcuts, NewSetPaths, ExcelToData):
@@ -80,7 +81,7 @@ class Defis(WDShorcuts, NewSetPaths, ExcelToData):
             self.client_path = self.files_pathit(_cliente, COMPT, )
             if _ja_declared not in ['S', 'OK', 'FORA']:
                 print('-' * 60)
-                print(f'CNPJ: {CNPJ}, {CNPJ.strip()==self.socios_now__cnpj[0]}')
+                # print(f'CNPJ: {CNPJ}, {CNPJ.strip()==self.socios_now__cnpj[0]}')
                 self.the_print()
 
                 __client_path = self.client_path
@@ -112,10 +113,52 @@ class Defis(WDShorcuts, NewSetPaths, ExcelToData):
                         break
                     except TimeoutException:
                         driver.get('https://sinac.cav.receita.fazenda.gov.br/SimplesNacional/Aplicacoes/ATSPO/defis.app/entrada.aspx')
+                (print('sleeping'), sleep(5))
+                self.send_keys_anywhere(Keys.TAB, 2)
+                self.send_keys_anywhere(Keys.ENTER, 1)
+                self.contains_text(str(self.y()-1)).click()
+                self.contains_text('Continuar').click()
+                driver.implicitly_wait(10)
+                self.send_keys_anywhere(Keys.TAB, 9)
+                self.send_keys_anywhere(Keys.ENTER, 1)
+                self.send_keys_anywhere(Keys.TAB, 2)
+                self.send_keys_anywhere(Keys.ENTER, 1)
+                WebDriverWait(self.driver, 5)
+                try:
+                    self.send_keys_anywhere(Keys.TAB, 1)
+                    self.send_keys_anywhere(Keys.ENTER, 1)
+                except UnexpectedAlertPresentException:
+                    pass
+                else:
+                    # se 3 => De toda MP
+                    self.send_keys_anywhere(Keys.TAB, 2)
+                    self.send_keys_anywhere(Keys.ENTER)
+
+                    self.send_keys_anywhere(Keys.TAB, 1)
+                    # Informações econômicas e fiscais do estabelecimento
+
+                    ac = ActionChains(self.driver)
+                    for sdc in range(13):
+                        ac.send_keys('0')
+                        ac.send_keys(Keys.TAB)
+                    ac.perform()
+                    self.send_keys_anywhere(Keys.TAB, 11, pause=.1)
+
+                    self.send_keys_anywhere(Keys.RIGHT)
+                    self.send_keys_anywhere(Keys.TAB)
+                    self.send_keys_anywhere(Keys.RIGHT)
+
+                    self.send_keys_anywhere(Keys.TAB, 15, pause=.001)
+                    self.send_keys_anywhere(Keys.ENTER)
+
+                    # Chega até os campos padrão
 
                 print('\033[1;31m DIGITE F8 p/ prosseguir \033[m')
                 which_one = press_key_b4('f8')
                 now_process.kill()
+            print('-' * 30)
+            print(f'already declared {_cliente}')
+            print('-' * 30)
 
     def loga_cert(self):
         """
