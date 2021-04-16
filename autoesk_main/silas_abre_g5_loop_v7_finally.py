@@ -40,7 +40,7 @@ class Fantasia(NewSetPaths, ExcelToData):
         excel_file_name = super().excel_file_path()
 
         # ###############################
-        self.abre_programa('G5')
+        #self.abre_programa('G5')
         # ###############################
         for sh_name in sh_names:
             # agora eu posso fazer downloalds sem me preocupar tendo a variável path
@@ -74,6 +74,7 @@ class Fantasia(NewSetPaths, ExcelToData):
                     # (pois o xml e excel vem do ginfess_download)....
 
                     registronta = self.registronta(CLIENTE, self.compt_used)
+                    input(registronta)
                     print(CLIENTE)
                     if meus_3_valores_atuais and registronta:
                         all_xls_inside = self.files_get_anexos_v3(CLIENTE, file_type='xlsx', compt=self.compt_used)
@@ -91,7 +92,7 @@ class Fantasia(NewSetPaths, ExcelToData):
                         pygui.write(self.get_xml(CLIENTE))
 
                         """IMPORTA ITENS OU NÃO"""
-                        if 'Exatitec' in CLIENTE:
+                        if 'LUCRO PRESUMIDO' in CLIENTE:
                             # aqui mais pra frente irei validar melhor SE IMPORTA ITEMS OU NÃO
                             w = pygui.getActiveWindow()
                             pygui.click(w.center)
@@ -173,7 +174,14 @@ class Fantasia(NewSetPaths, ExcelToData):
                         path_file_temp_file = f"C:\\tmp\\{paste()}"
                         sleep(2)
                         filenewname = f'{self.client_path}\\Registro_ISS-{CNPJ}.pdf'
-                        self.move_file(path_file_temp_file, filenewname)
+                        while True:
+                            try:
+                                self.move_file(path_file_temp_file, filenewname)
+                                print('finally')
+                                break
+                            except PermissionError:
+                                sleep(5)
+                                break
 
                         """save in adobe"""
 
@@ -200,6 +208,12 @@ class Fantasia(NewSetPaths, ExcelToData):
         :return: se tiver pdf que tem ISS e REGISTRO
         """
         registronta = False
+        for f in self.files_get_anexos_v3(client, file_type='xml', compt=compt_file):
+            return True
+
+        for f in self.files_get_anexos_v3(client, file_type='csv', compt=compt_file):
+            return True
+
         for f in self.files_get_anexos_v3(client, file_type='pdf', compt=compt_file):
             if 'ISS' in f.upper():
                 registronta = False

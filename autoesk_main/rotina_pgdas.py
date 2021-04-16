@@ -1,12 +1,20 @@
-from time import sleep
+# dale
+from imports import Keys, By, WebDriverWait, expected_conditions
+from imports import TimeoutException, ElementClickInterceptedException, NoSuchElementException
+from imports import activate_window, press_key_b4
 
+from imports import WDShorcuts, ExcelToData
+from _new_set_paths import NewSetPaths
+from imports import sleep, press_keys_b4
 
-from default.webdriver_utilities import webdriver
+import pyautogui as pygui
+
+import pandas as pd
 from default.webdriver_utilities.pre_drivers import pgdas_driver
 
+class PgdasAnyCompt(WDShorcuts, NewSetPaths, ExcelToData):
 
-class PgdasAnyCompt(WDShorcuts, SetPaths, ExcelToData):
-    def __init__(self, compt_file=None):
+    def __init__(self):
         """
         :param compt_file: from GUI
 
@@ -14,21 +22,12 @@ class PgdasAnyCompt(WDShorcuts, SetPaths, ExcelToData):
         """
         import pandas as pd
 
-        from .relacao_nfs import tres_valores_faturados
+        from autoesk_main.pgdas_fiscal_oesk.relacao_nfs import tres_valores_faturados
         # O vencimento DAS(seja pra qual for a compt) está certo, haja vista que se trata do mes atual
 
+
         sh_names = 'sem_mov', 'G5_ISS', 'G5_ICMS'
-        if compt_file is None:
 
-            """# Atualização, 14/01/2021"""
-            # self.set_compt_only() == self.set_get_compt_file(file_type=None)
-            # a = self.set_get_compt_file(file_type=None, m_cont=12)
-            # descobri como fazer..
-
-            compt_file = self.compt_and_filename()
-            compt, excel_file_name = compt_file
-        else:
-            compt, excel_file_name = compt_file
 
         intelligence_existence = self.intelligence_existence_done(
             'CERT_vs_LOGIN.xlsx')
@@ -38,6 +37,9 @@ class PgdasAnyCompt(WDShorcuts, SetPaths, ExcelToData):
         client_db_name = inteligence_db['CLIENT']
         cert_x_login = inteligence_db['CERT x LOGIN']
         cont_inteligence = -1
+
+        compt = super().get_compt_only().replace('-', '/')
+        excel_file_name = super().excel_file_path()
 
         for sh_name in sh_names:
             # agora eu posso fazer downloalds sem me preocupar tendo a variável path
@@ -66,12 +68,13 @@ class PgdasAnyCompt(WDShorcuts, SetPaths, ExcelToData):
                 if CLIENTE == '':
                     break
                 self.now_person = CLIENTE
-                self.client_path = self._files_path_v3(
-                    CLIENTE, wexplorer_tup=compt_file)
+                self.client_path = self.files_pathit(CLIENTE)
+
 
                 # if not existe o arquivo my_wised_check_path_file -> no momento atual, existe
                 def cria_inteligence():
                     print('Intelligence does not exist')
+                    self.driver = pgdas_driver(self.client_path)
 
                     self.loga_cert()
 
@@ -139,7 +142,7 @@ class PgdasAnyCompt(WDShorcuts, SetPaths, ExcelToData):
                         print('FINISH')
                         break
                     # input(intelligence_existence[cont_inteligence][0]) # -> O NOME DO CLIENTE
-                    my_new_3valores = tres_valores_faturados(__client_path)
+                    my_new_3valores = tres_valores_faturados(self.client_path)
                     print(my_new_3valores, '----> my_new_3valores')
 
                     def return_valor():
@@ -191,26 +194,16 @@ class PgdasAnyCompt(WDShorcuts, SetPaths, ExcelToData):
                         self.opta_script() if self.m() == 12 else None
 
                     else:
+
                         self.loga_simples(CNPJ, CPF, CodSim, CLIENTE)
                         self.current_url = driver.current_url
                         self.opta_script() if self.m() == 12 else None
 
-                    self.compt_typist(compt)
-
                     # faz outras declaracoes se necessarias
                     """NÃO FUNCIONANDO CORRETAMENTE AINDA"""
-                    if self.check_make_pendencies():
-                        for compt_p2 in self.check_make_pendencies():
-                            print(compt_p2, 'compt_p2')
-                            self.compt_typist(
-                                compt_p2, '/'.join(driver.current_url.split('/')[:-1]))
-                            self.DECLARA(compt_p2, sh_names.index(sh_name), '', False,
-                                         cont_ret_n_ret)
-                            # # CRIAR NOVA PASTA, SALVAR NO LUGAR CERTO POIS NÃO TA SALVANDO ENFIM, CONFERIR O DECLARA ONDE ESTÁ SALVANDO
-                        self.compt_typist(
-                            compt, '/'.join(driver.current_url.split('/')[:-1]))
-                    else:
-                        self.compt_typist(compt)
+                    # if self.check_make_pendencies():
+
+                    self.compt_typist(compt)
 
                     self.DECLARA(compt, sh_names.index(sh_name),
                                  VALOR, my_new_3valores, cont_ret_n_ret)
@@ -268,69 +261,16 @@ class PgdasAnyCompt(WDShorcuts, SetPaths, ExcelToData):
                     print(
                         f'{CLIENTE} \nJA DECLARADO: {JA_DECLARED}\n-----------------')
 
-    def loga_cert(self):
-        """
-        :return: mixes the two functions above (show_actual_tk_window, mensagem)
-        """
-        from threading import Thread
-        from pyautogui import hotkey
-
-        driver = self.driver
-        while True:
-            try:
-                driver.get(
-                    'https://cav.receita.fazenda.gov.br/autenticacao/login')
-                driver.set_page_load_timeout(30)
-                break
-            except TimeoutException:
-                driver.refresh()
-            finally:
-                sleep(1)
-
-        activate_window('eCAC - Centro Virtual de Atendimento')
-        """
-        while True:
-            try:
-                driver.get('https://cav.receita.fazenda.gov.br/')
-                driver.set_page_load_timeout(5)
-                break
-            except TimeoutException:
-                driver.refresh()
-            finally:
-                sleep(1)
-        """
-        # initial = driver.find_element_by_id('caixa1-login-certificado')
-        driver.get(
-            'https://sso.acesso.gov.br/authorize?response_type=code&client_id=cav.receita.fazenda.gov.br&'
-            'scope=openid+govbr_recupera_certificadox509+govbr_confiabilidades&'
-            'redirect_uri=https://cav.receita.fazenda.gov.br/autenticacao/login/govbrsso')
-        initial = driver.find_element_by_link_text('Certificado digital')
-
-        print('ativando janela acima, logando certificado abaixo, linhas 270')
-        sleep(2)
-        # self.thread_pool_executor(initial.click, [hotkey, 'enter'])
-
-        t = Thread(target=initial.click)
-        t.start()
-        tt = Thread(target=sleep(2.5))
-        tt.start()
-        # B4 enter, ir pra baixo por causa do certificado do castilho
-        tb4 = Thread(target=hotkey('down'))
-        tb4.start()
-        tt2 = Thread(target=sleep(2))
-        tt2.start()
-        t2 = Thread(target=hotkey('enter'))
-        t2.start()
 
     def intelligence_existence_done(self, file: str):
         """:param file: path_file_name, excel"""
+        import os
         try:
-            compt, path_name = self.compt_and_filename()
-            path_name = path_name.split('/')[:-1]
-            path_name = '/'.join(path_name)
-            path_name = f'{path_name}/{file}'
-            path_name = path_name.replace('//', '/')
-            print(path_name)
+            compt = super().get_compt_only()
+            excel_file_name = super().excel_file_path()
+
+            path_name = os.path.dirname(excel_file_name)
+            path_name = os.path.join(path_name, file)
 
             inteligence_done = pd.read_excel(path_name, dtype=str)
 
@@ -527,14 +467,10 @@ class PgdasAnyCompt(WDShorcuts, SetPaths, ExcelToData):
                     f"""window.location.href += '{onlif}?clear=1'""")
         self.tags_wait('body', 'input')
         driver.implicitly_wait(10)
-        sleep(2.5)
-        try:
-            periodo = driver.find_element_by_id('pa')
-            periodo.send_keys(compt)
+        periodo = self.webdriverwait_by_id('pa', 20)
+        periodo.send_keys(compt)
+        self.find_submit_form()
 
-            self.find_submit_form()
-        except NoSuchElementException:
-            pass
 
     def check_make_pendencies(self):
         driver = self.driver
@@ -569,11 +505,12 @@ class PgdasAnyCompt(WDShorcuts, SetPaths, ExcelToData):
         declara_client = self.now_person
         try:
             js_confirm = driver.find_element_by_id('jsMsgBoxConfirm')
-
+            """
             tk_msg('F2 para somente gerar os últimos 3 arquivos de declarações.\n F4 para RETIFICAR'
                    '\nF10 p/ consolidar para ultima data do mês\n\n'
                    '\nF11 Para passar para o próximo cliente \n\n'
                    'Espere ou clique OK', 10)
+            """
             # não consegui callback em mensagem
             which_one = press_keys_b4('f2', 'f4', 'f10', 'f11')
             print(type(which_one))
@@ -855,7 +792,7 @@ class PgdasAnyCompt(WDShorcuts, SetPaths, ExcelToData):
             self.find_submit_form()
             # GERAR DAS
         else:
-            tk_msg(f'Tente outra opção, linha 550 +-, opc: {option}')
+            return False
 
     def opta_script(self):
         driver = self.driver
@@ -884,7 +821,7 @@ class PgdasAnyCompt(WDShorcuts, SetPaths, ExcelToData):
                 self.click_ac_elementors(
                     driver.find_element_by_class_name('glyphicon-save'))
             except NoSuchElementException:
-                input('Não consegui')
+                input('input Não consegui')
             else:
                 print('Não fui exceptado')
             # ########################################################
@@ -895,3 +832,22 @@ class PgdasAnyCompt(WDShorcuts, SetPaths, ExcelToData):
             driver.execute_script(
                 """window.location.href += '/declaracao?clear=1'""")
             sleep(2.5)
+
+    def certif_feito(self, save_path, add=''):
+        """
+        certificado de que está feito
+        :param save_path: nome da pasta vinda de _files_path_v2
+        :param add: um adicional no nome do arquivo
+        :return: caminho+ nome_arquivo jpeg
+        """
+        client_name = save_path[save_path.index('-')-2: save_path.index('-')+2]
+        type_arquivo = 'png'
+        try:
+            save = r'{}\\{}-SimplesNacionalDeclarado.{}'.format(save_path, add, type_arquivo)
+            print(save, '---------> SAVE')
+            return save
+        except FileNotFoundError:
+            print('NÃO CONSEGUI RETORNAR SAVE')
+
+
+PgdasAnyCompt()

@@ -148,7 +148,7 @@ def ginfess_driver(path=''):
     print('\033[1;33m Headless\033[m')
     chrome_options = Options()
 
-    # chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--headless")
     chrome_options.add_argument("--disable-notifications")
     chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--verbose')

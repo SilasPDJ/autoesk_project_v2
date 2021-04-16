@@ -147,59 +147,6 @@ class Dividas(WDShorcuts, NewSetPaths, ExcelToData):
                         print('ACABOU, break')
                         break
 
-    def loga_cert(self):
-        """
-        :return: mixes the two functions above (show_actual_tk_window, mensagem)
-        """
-        from threading import Thread
-        from pyautogui import hotkey
-
-        driver = self.driver
-        while True:
-            try:
-                driver.get(
-                    'https://cav.receita.fazenda.gov.br/autenticacao/login')
-                driver.set_page_load_timeout(30)
-                break
-            except TimeoutException:
-                driver.refresh()
-            finally:
-                sleep(1)
-
-        activate_window('eCAC - Centro Virtual de Atendimento')
-        """
-        while True:
-            try:
-                driver.get('https://cav.receita.fazenda.gov.br/')
-                driver.set_page_load_timeout(5)
-                break
-            except TimeoutException:
-                driver.refresh()
-            finally:
-                sleep(1)
-        """
-        # initial = driver.find_element_by_id('caixa1-login-certificado')
-        driver.get(
-            'https://sso.acesso.gov.br/authorize?response_type=code&client_id=cav.receita.fazenda.gov.br&'
-            'scope=openid+govbr_recupera_certificadox509+govbr_confiabilidades&'
-            'redirect_uri=https://cav.receita.fazenda.gov.br/autenticacao/login/govbrsso')
-        initial = driver.find_element_by_link_text('Certificado digital')
-
-        print('ativando janela acima, logando certificado abaixo, linhas 270')
-        sleep(2)
-        # self.thread_pool_executor(initial.click, [hotkey, 'enter'])
-
-        t = Thread(target=initial.click)
-        t.start()
-        tt = Thread(target=sleep(2.5))
-        tt.start()
-        # B4 enter, ir pra baixo por causa do certificado do castilho
-        tb4 = Thread(target=hotkey('down'))
-        tb4.start()
-        tt2 = Thread(target=sleep(2))
-        tt2.start()
-        t2 = Thread(target=hotkey('enter'))
-        t2.start()
 
     def change_ecac_client(self, CNPJ):
         """:return: vai até ao site de declaração do ECAC."""

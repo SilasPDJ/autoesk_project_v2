@@ -11,7 +11,8 @@ class SendDividas(EmailExecutor, MakeJson):
         :param compt: mm-yyyy; mm/yyyy
         """
         import pandas as pd
-        self.venc_boletos = self.vencimento_dividas()
+        self.venc_boletos = self.vencimento_dividas().replace("29", '30')
+
         print('VENCIMENTO DÍVIDAS: ', self.venc_boletos)
         here_sh_names = ['_Dívidas']
 

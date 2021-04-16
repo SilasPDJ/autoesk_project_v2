@@ -1,5 +1,6 @@
 # SyntaxWarning: import * only allowed at module level
 from time import sleep
+import threading
 
 
 def press_key_b4(key: str):
@@ -172,3 +173,20 @@ def tk_msg(mensagem:str, time=7):
 
     print('Mensagem: ', mensagem)
     ExampleApp().mainloop()
+
+
+class DownloadToWorldThread (threading.Thread):
+    def __init__(self, threadID, name, counter, *args):
+        threading.Thread.__init__(self)
+        self.threadID = threadID
+        self.name = name
+        self.counter = counter
+        self.args = args
+
+    def run(self):
+        print('Args are: {}'.format(self.args))
+        self.downloadToMyHouse(self.args)
+
+    def downloadToMyHouse(self, *args):
+        for i in args:
+            print(i)

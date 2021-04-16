@@ -1,18 +1,19 @@
 import pandas
 import openpyxl
 import os
-from default.settings import SetPaths
-from default.data_treatment import ExcelToData
+
+from autoesk_main._new_set_paths import NewSetPaths
+from autoesk_main.default.data_treatment import ExcelToData
 
 
-class Pandas(SetPaths, ExcelToData):
+class Pandas(NewSetPaths, ExcelToData):
 
     my_file = 'DEFIS-anual-Copia.xlsx'
 
     def __init__(self, compt_file=None):
         # sh_names = ['DEFIS']
 
-        excel_path = os.path.dirname(self.compt_and_filename()[1])
+        excel_path = os.path.dirname(super().excel_file_path())
         self.my_file = f'{excel_path}/{self.my_file}'
 
     def os_walk__get_dirfs_path(self, searched_client=None):
@@ -46,6 +47,7 @@ class Pandas(SetPaths, ExcelToData):
 
 
 inst = Pandas()
+input('security')
 mcp = openpyxl.load_workbook(inst.my_file)
 # mycopy.create_sheet('Socios')
 

@@ -10,7 +10,7 @@ class PgDasmailSender(EmailExecutor, MakeJson):
         :param compt: mm-yyyy; mm/yyyy
         """
 
-        self.venc_das = self.vencimento_das()
+        self.__venc_das = "20-07-2021"
         here_sh_names = ['G5_ISS', 'G5_ICMS']
         if compt is None:
             compt = super().get_compt_only()
@@ -58,6 +58,7 @@ class PgDasmailSender(EmailExecutor, MakeJson):
                     """a partir do terceiro argumento, só há mensagens attachedas"""
 
                     print(f'Enviado... p/ {now_email}')
+                    # input('teste')
 
     def mail_pgdas_msg(self, client, cnpj, tipo_das, valor):
         colours = self.zlist_colours_emails()
@@ -82,7 +83,7 @@ sobre faturamento de {ntt('span style="background-color:yellow; color:green"', '
             {
     f'''
     <h3>
-        -> A data de vencimento do boleto é: {ntt('span' + red, self.venc_das)}
+        -> A data de vencimento do boleto é: {ntt('span' + red, self.__venc_das)}
     </h3>
     <h4> 
         -> O arquivo do boleto contém as iniciais "{ntt('span'+red,'PGDASD-DAS')}"
@@ -93,6 +94,9 @@ sobre faturamento de {ntt('span style="background-color:yellow; color:green"', '
 <hr>
 </h3> 
 
+
+{f'''<h3> Reafirmo que o vencimento do boleto foi prorrogado para o dia {self.__venc_das} </h3>''' 
+        if valor != 'SEM VALOR DECLARADO' else "<br>"}
 
 <div>
 Este e-mail é automático. Por gentileza, cheque o nome e o CNPJ ({ntt('span'+red, cnpj)}) antes de pagar o documento.

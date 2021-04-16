@@ -1,19 +1,14 @@
-from selenium import webdriver
-from selenium.webdriver import ChromeOptions
-from selenium.webdriver.common.keys import Keys
-from default.webdriver_utilities import *
-from default.interact import press_keys_b4, press_key_b4
-from default.settings import SetPaths
-from default.data_treatment import ExcelToData
+# dale
+from imports import Keys, By, WebDriverWait, expected_conditions
+from imports import TimeoutException, ElementClickInterceptedException, NoSuchElementException, NoAlertPresentException
+from imports import activate_window, press_key_b4
 
-from default.webdriver_utilities.pre_drivers import webdriver
-import default.interact as interact
-
-
-import pyautogui as pygui
-from time import sleep
-# import pywinauto as pwin
+from imports import WDShorcuts, ExcelToData
+from _new_set_paths import NewSetPaths
+from imports import sleep
 import pandas as pd
+from imports import ginfess_driver
+from imports import pgdas_driver
 
 weblink = 'https://portal.gissonline.com.br/login/index.html'
 
@@ -24,100 +19,105 @@ sh_name = 'GISS'
 
 
 # self.pyautogui
-class GissGui(WDShorcuts, SetPaths, ExcelToData):
-    from selenium.webdriver.common.by import By
+class GissGui(WDShorcuts, NewSetPaths, ExcelToData):
 
-    def __init__(self, fname, firstcompt=None):
+    def __init__(self, firstcompt=None):
         from os import chdir, path, getcwd
         from time import sleep
-        from smtp_project.init_email import JsonDateWithImprove as Jj
+
         from functools import partial
+        sh_names = ['GISS']
+        # input(len(after_read['CNPJ']))
 
-        json_file = Jj.load_json(fname)
-        # input(len(after_READ['CNPJ']))
+        self.compt_atual = super().get_compt_only()
+        excel_file_name = super().excel_file_path()
 
-        for eid in json_file.keys():
-            print('~'*30)
-            print(eid)
-            print('~' * 30)
-            # print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'*10)
-            # print(list_with_dict)
-            list_with_dic = json_file[eid]
+        for sh_name in sh_names:
+            # agora eu posso fazer downloalds sem me preocupar tendo a variável path
+            mshExcelFile = pd.ExcelFile(excel_file_name)
 
-            values = [v.values() for v in list_with_dic[:]]
-            _cliente, _feito, _logar, self._construcao, _notes = self.any_to_str(*values[:5])
-
-            # client_path = self._files_path_v2(_cliente, wexplorer_tup=compt_file)
-            # self.client_path = client_path
-            self.volta = getcwd()
-
-            os.chdir(path.realpath('\\'.join(__file__.split('\\')[:-1])))
-            with open('data_clients_files/giss_passwords.txt') as f:
+            msh = mshExcelFile.parse(sheet_name=str(sh_name))
+            col_str_dic = {column: str for column in list(msh)}
+            msh = mshExcelFile.parse(
+                sheet_name=str(sh_name), dtype=col_str_dic)
+            READ = self.le_excel_each_one(msh)
+            self.after_read = self.readnew_lista(READ, False)
+            after_read = self.after_read
+            with open('pgdas_fiscal_oesk/data_clients_files/giss_passwords.txt') as f:
                 __senhas = f.read().split(',')
-            os.chdir(volta)
 
             [print(s) for s in __senhas]
-            print('~'*30, 'SENHAS')
+            used_after_read = list(after_read.values())[:5]
+            __giss_cnpj, __feito, __logar, self.__construcao, _anotacoes = used_after_read
+            for i in range(len(__feito)):
 
-            # if _feito not in ["checkar", "ok"]:
-            for loop_compt in self.ate_atual_compt(first_compt=firstcompt):
-                self.driver = webdriver.Chrome(link)
-                super().__init__(self.driver)
-                driver = self.driver
-                driver.get(weblink)
-                chrome = driver
-                cont_senha = 0
-                while True:
-                    # TxtIdent
-                    driver.find_element_by_xpath('//input[@name="TxtIdent"]').send_keys(_logar)
-                    driver.find_element_by_xpath('//input[@name="TxtSenha"]').send_keys(__senhas[cont_senha])
-                    print(f'Senha: {__senhas[cont_senha]}', end=' ')
-                    cont_senha += 1
-                    driver.find_element_by_link_text("Acessar").click()
+                _giss_cliente, _feito, _logar, self._construcao, anotacoes = (__giss_cnpj[i], __feito[i], __logar[i], self.__construcao[i],
+                                                                           _anotacoes[i])
+
+                if _logar.strip() == "GISS LOGIN" or _feito.strip() != "":
+                    continue
+                    # ################################ essa lógica acima ...................................... continue
+                for loop_compt in self.ate_atual_compt(first_compt=firstcompt):
+                    [print(a) for a in self.ate_atual_compt(first_compt=firstcompt)]
+
+                    # self.driver = ginfess_driver()
+                    self.driver = pgdas_driver()
+                    super().__init__(self.driver)
+                    driver = self.driver
+                    driver.get(weblink)
+                    chrome = driver
+                    cont_senha = 0
+                    while True:
+                        # TxtIdent
+                        driver.find_element_by_xpath('//input[@name="TxtIdent"]').send_keys(_logar)
+                        driver.find_element_by_xpath('//input[@name="TxtSenha"]').send_keys(__senhas[cont_senha])
+                        print(f'Senha: {__senhas[cont_senha]}', end=' ')
+                        cont_senha += 1
+                        driver.find_element_by_link_text("Acessar").click()
+                        try:
+                            WebDriverWait(chrome, 5).until(expected_conditions.alert_is_present(),
+                                                           'Timed out waiting for PA creation ' +
+                                                           'confirmation popup to appear.')
+                            alert = chrome.switch_to.alert
+                            alert.accept()
+                            print("estou no try")
+                            driver.execute_script("window.history.go(-1)")
+                        except TimeoutException:
+                            print("no alert, sem alerta, exceptado")
+                            break
+                            # holy
+                    """
+                    for m in range(m_cont):
+                        # print(self.write_date(m_cont, y_cont))
+                        mes, ano = self.set_get_compt_file(m_cont, y_cont, file_type=False).split('-')
+        
+                        print(mes, ano)
+                    input()
+                    """
+
+                    month, year = loop_compt.split('-')
+
+                    self.calls_write_date = partial(self.write_date_variascompt, month, year)
                     try:
-                        WebDriverWait(chrome, 5).until(expected_conditions.alert_is_present(),
-                                                       'Timed out waiting for PA creation ' +
-                                                       'confirmation popup to appear.')
-                        alert = chrome.switch_to.alert
-                        alert.accept()
-                        print("estou no try")
-                        driver.execute_script("window.history.go(-1)")
-                    except TimeoutException:
-                        print("no alert, sem alerta, exceptado")
-                        break
-                        # holy
-                """
-                for m in range(m_cont):
-                    # print(self.write_date(m_cont, y_cont))
-                    mes, ano = self.set_get_compt_file(m_cont, y_cont, file_type=False).split('-')
-    
-                    print(mes, ano)
-                input()
-                """
+                        iframe = driver.find_element_by_xpath("//iframe[@name='header']")
+                        driver.switch_to.frame(iframe)
+                    except NoSuchElementException:
+                        driver.execute_script("window.location.href=('/tomador/tomador.asp');")
 
-                month, year = loop_compt.split('-')
+                    if self._construcao.lower().strip() != 'sim':
+                        driver.find_element_by_xpath("//img[contains(@src,'images/bt_menu__05_off.jpg')]").click()
 
-                self.calls_write_date = partial(self.write_date_variascompt, month, year)
-                try:
-                    iframe = driver.find_element_by_xpath("//iframe[@name='header']")
-                    driver.switch_to.frame(iframe)
-                except NoSuchElementException:
-                    driver.execute_script("window.location.href=('/tomador/tomador.asp');")
-
-                if self._construcao.lower().strip() != 'sim':
-                    driver.find_element_by_xpath("//img[contains(@src,'images/bt_menu__05_off.jpg')]").click()
-
-                else:
-                    print('Construção Civil?')
-                    self.constr_civil()
-                driver.switch_to.default_content()
-                sleep(1)
-                if self._construcao.lower() == 'sim':
-                    self.fazendo_principal(True)
-                else:
-                    self.fazendo_principal()
-                driver.implicitly_wait(10)
-            self.driver.close()
+                    else:
+                        print('Construção Civil?')
+                        self.constr_civil()
+                    driver.switch_to.default_content()
+                    sleep(1)
+                    if self._construcao.lower() == 'sim':
+                        self.fazendo_principal(True)
+                    else:
+                        self.fazendo_principal()
+                    driver.implicitly_wait(10)
+                self.driver.close()
         print('GISS encerrado!')
 
     def readnew_lista(self, READ, print_values=False):
@@ -261,35 +261,23 @@ class GissGui(WDShorcuts, SetPaths, ExcelToData):
     def tag_wait(self, driver, tag):
         delay = 10
         try:
-            my_elem = WebDriverWait(driver, delay).until(expected_conditions.presence_of_element_located((self.By.TAG_NAME, tag)))
+            my_elem = WebDriverWait(driver, delay).until(expected_conditions.presence_of_element_located((By.TAG_NAME, tag)))
             print(f"\033[1;31m{tag.upper()}\033[m is ready!")
         except TimeoutException:
             input("Loading took too much time!")
 
-    def ate_atual_compt(self, first_compt:str):
+    def ate_atual_compt(self, first_compt):
 
-        compt_atual = self.compt_and_filename()[0]
-        comp1st = f'{first_compt[:2]}-{first_compt[2:]}' if len(first_compt) == len(str(self.y()))+2 else compt_atual
+        from datetime import date
+        cmpt = self.compt_atual.split('-')
+        cmpt = [int(v) for v in cmpt]
+        #last_compt = atual
+        last_compt = date(cmpt[1], cmpt[0], 1)
 
-        mes_atual, ano_atual = compt_atual.split('-')
-        mes1st, ano1st = comp1st.split('-')
-        max_month = 13
+        #TODO: depois faço aprtindo do first_compt
+        # O objetivo dessa função é retornar yildar um range de compt, partindo do first_compt
 
-        mes1st = int(mes1st)
-        ano1st = int(ano1st)
+        yield self.compt_atual
 
-        mes_atual, ano_atual = int(mes_atual), int(ano_atual)
 
-        distancia_ano = ano_atual - ano1st
-        for anocont in range(ano1st, ano_atual+1):
-
-            if anocont == ano1st:
-                for mes in range(mes1st, max_month):
-                    result = f'{mes:02d}-{anocont}'
-                    yield result
-
-            else:
-
-                for mes in range(1, max_month):
-                    result = f'{mes:02d}-{anocont}'
-                    yield result
+GissGui()
