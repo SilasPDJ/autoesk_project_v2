@@ -2,26 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b24ff710-6f04-4662-b083-e6d15a5baceb" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/autoesk_main/cria_pastas_nova_versao.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/autoesk_main/pandas_increment_day3_CNAE-municipio.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autoesk_main/default/interact/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/autoesk_main/default/interact/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autoesk_main/default/webdriver_utilities/pre_drivers.py" beforeDir="false" afterPath="$PROJECT_DIR$/autoesk_main/default/webdriver_utilities/pre_drivers.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/autoesk_main/default/webdriver_utilities/wbs.py" beforeDir="false" afterPath="$PROJECT_DIR$/autoesk_main/default/webdriver_utilities/wbs.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autoesk_main/dividas_simplesNacional.py" beforeDir="false" afterPath="$PROJECT_DIR$/autoesk_main/dividas_simplesNacional.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autoesk_main/giss_online_pt10_variascompt.py" beforeDir="false" afterPath="$PROJECT_DIR$/autoesk_main/giss_online_pt10_variascompt.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autoesk_main/pgdas_fiscal_oesk/DEFIS/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/autoesk_main/pgdas_fiscal_oesk/DEFIS/_comprovante_de_rendimento.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/autoesk_main/pgdas_fiscal_oesk/DEFIS/jucespVisualizaTicket_v3.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/autoesk_main/pgdas_fiscal_oesk/DEFIS/jucespVisualizaTicket_v4.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/autoesk_main/pgdas_fiscal_oesk/DEFIS/jucesp_consulta.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/autoesk_main/pgdas_fiscal_oesk/DEFIS/os_walk_base.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/autoesk_main/pgdas_fiscal_oesk/DEFIS/pandas_increment.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/autoesk_main/pgdas_fiscal_oesk/DEFIS/pandas_increment_day2.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/autoesk_main/rotina_pgdas.py" beforeDir="false" afterPath="$PROJECT_DIR$/autoesk_main/rotina_pgdas.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autoesk_main/send_dividas.py" beforeDir="false" afterPath="$PROJECT_DIR$/autoesk_main/send_dividas.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autoesk_main/send_pgdasmail.py" beforeDir="false" afterPath="$PROJECT_DIR$/autoesk_main/send_pgdasmail.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autoesk_main/silas_abre_g5_loop_v7_finally.py" beforeDir="false" afterPath="$PROJECT_DIR$/autoesk_main/silas_abre_g5_loop_v7_finally.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,7 +60,7 @@
       <recent name="H:\MY_PROJECTS\autoesk_project\autoesk_main\default" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.send_pgdasmail">
+  <component name="RunManager" selected="Python.dividas_simplesNacional">
     <configuration name="cria_pastas_nova_versao" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="autoesk_project" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -206,10 +189,10 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.dividas_simplesNacional" />
         <item itemvalue="Python.send_pgdasmail" />
         <item itemvalue="Python.rotina_pgdas" />
         <item itemvalue="Python.send_dividas" />
-        <item itemvalue="Python.dividas_simplesNacional" />
         <item itemvalue="Python.cria_pastas_nova_versao" />
       </list>
     </recent_temporary>
