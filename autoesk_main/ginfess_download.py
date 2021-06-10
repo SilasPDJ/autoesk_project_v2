@@ -618,6 +618,9 @@ class DownloadGinfessGui(WDShorcuts, NewSetPaths, ExcelToData, HasJson):
         print(f'\033[1;31m{__file__}\033')
 
     def newest_file(self, fpath, ext='pdf'):
+        import os
         files = [os.path.join(fpath, fname) for fname in os.listdir(fpath)]
         newest = max(files, key=lambda x: os.path.getctime(x) if x.endswith(ext) else False)
         return newest
+
+

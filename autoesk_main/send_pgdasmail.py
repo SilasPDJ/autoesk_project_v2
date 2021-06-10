@@ -10,7 +10,7 @@ class PgDasmailSender(EmailExecutor, MakeJson):
         :param compt: mm-yyyy; mm/yyyy
         """
 
-        self.__venc_das = "20-07-2021"
+        self.__venc_das = "20-09-2021"
         here_sh_names = ['G5_ISS', 'G5_ICMS']
         if compt is None:
             compt = super().get_compt_only()

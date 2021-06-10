@@ -20,7 +20,10 @@ from default.webdriver_utilities import WDShorcuts
 
 from pgdas_fiscal_oesk.emails_date_scrap import EmailsDateScrap
 from pgdas_fiscal_oesk.relacao_nfs import tres_valores_faturados, NfCanceled
+try:
 
-from _init_email import EmailExecutor
-# import platform
+    from _init_email import EmailExecutor
+    # import platform
+except ImportError:
+    pass
 
