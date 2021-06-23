@@ -41,6 +41,7 @@ class SendDividas(EmailExecutor, MakeJson):
                                                              compt=compt, upload=False)
                 qtd_arquivos = len(dividas_pdf_files)
                 mail_header = f"com vencimento previsto para o dia: {self.venc_boletos.replace('-', '/')}"
+
                 mail_header = mail_header.replace('30', '31')
 
                 mail_header = f"Parcelamentos, {'boleto' if qtd_arquivos == 1 else 'boletos'} {mail_header}"

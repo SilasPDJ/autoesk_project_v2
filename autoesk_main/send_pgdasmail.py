@@ -10,7 +10,7 @@ class PgDasmailSender(EmailExecutor, MakeJson):
         :param compt: mm-yyyy; mm/yyyy
         """
 
-        self.__venc_das = "20-09-2021"
+        self.__venc_das = "22-11-2021"
         here_sh_names = ['G5_ISS', 'G5_ICMS']
         if compt is None:
             compt = super().get_compt_only()
@@ -52,7 +52,17 @@ class PgDasmailSender(EmailExecutor, MakeJson):
 
                     das_anx_files = self.files_get_anexos_v3(_cliente, file_type='pdf', compt=compt, upload=False)
                     # now_email = 'silsilinhas@gmail.com'
-                    self.main_send_email(now_email, mail_header, das_message, das_anx_files)
+
+                    if _valor != 'SEM VALOR DECLARADO':
+                        if len(das_anx_files) < 4:
+                            print(f'\033[1;31mAlgo está errado com {_cliente}\033[m')
+                            print('Vou passar...')
+                        else:
+                            print('td certo')
+                            self.main_send_email(now_email, mail_header, das_message, das_anx_files)
+                    else:
+                        self.main_send_email(now_email, mail_header, das_message, das_anx_files)
+
                     # input('security, silsilinhas')
                     # self.main_send_email('silsilinhas@gmail.com', mail_header, das_message, das_anx_files)
                     """a partir do terceiro argumento, só há mensagens attachedas"""
