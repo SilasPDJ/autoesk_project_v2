@@ -3,9 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="b24ff710-6f04-4662-b083-e6d15a5baceb" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autoesk_main/default/webdriver_utilities/Chromedriver/chromedriver.exe" beforeDir="false" afterPath="$PROJECT_DIR$/autoesk_main/default/webdriver_utilities/Chromedriver/chromedriver.exe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autoesk_main/dividas_simplesNacional.py" beforeDir="false" afterPath="$PROJECT_DIR$/autoesk_main/dividas_simplesNacional.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autoesk_main/send_dividas.py" beforeDir="false" afterPath="$PROJECT_DIR$/autoesk_main/send_dividas.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autoesk_main/giss_online_pt10_variascompt.py" beforeDir="false" afterPath="$PROJECT_DIR$/autoesk_main/giss_online_pt10_variascompt.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autoesk_main/rotina_pgdas.py" beforeDir="false" afterPath="$PROJECT_DIR$/autoesk_main/rotina_pgdas.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/autoesk_main/send_pgdasmail.py" beforeDir="false" afterPath="$PROJECT_DIR$/autoesk_main/send_pgdasmail.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -43,7 +42,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/autoesk_main" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../pythonRecorder" />
     <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
   </component>
   <component name="RecentsManager">
@@ -63,27 +62,6 @@
     </key>
   </component>
   <component name="RunManager" selected="Python.send_pgdasmail">
-    <configuration name="_create_folders" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="autoesk_project" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/autoesk_main" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/autoesk_main/_create_folders.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <configuration name="dividas_simplesNacional" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="autoesk_project" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -97,6 +75,27 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/autoesk_main/dividas_simplesNacional.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="giss_online_pt10_variascompt" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="autoesk_project" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/autoesk_main" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/autoesk_main/giss_online_pt10_variascompt.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -195,7 +194,7 @@
         <item itemvalue="Python.rotina_pgdas" />
         <item itemvalue="Python.send_dividas" />
         <item itemvalue="Python.dividas_simplesNacional" />
-        <item itemvalue="Python._create_folders" />
+        <item itemvalue="Python.giss_online_pt10_variascompt" />
       </list>
     </recent_temporary>
   </component>

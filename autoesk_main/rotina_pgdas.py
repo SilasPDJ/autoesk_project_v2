@@ -467,10 +467,13 @@ class PgdasAnyCompt(WDShorcuts, NewSetPaths, ExcelToData):
                     f"""window.location.href += '{onlif}?clear=1'""")
         self.tags_wait('body', 'input')
         driver.implicitly_wait(10)
-        periodo = self.webdriverwait_by_id('pa', 20)
-        periodo.send_keys(compt)
-        self.find_submit_form()
+        try:
+            periodo = self.webdriverwait_by_id('pa', 20)
+            periodo.send_keys(compt)
+            self.find_submit_form()
 
+        except TimeoutException:
+            pass
 
     def check_make_pendencies(self):
         driver = self.driver
