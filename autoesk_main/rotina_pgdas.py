@@ -12,6 +12,7 @@ import pyautogui as pygui
 import pandas as pd
 from default.webdriver_utilities.pre_drivers import pgdas_driver
 
+
 class PgdasAnyCompt(WDShorcuts, NewSetPaths, ExcelToData):
 
     def __init__(self):
@@ -25,9 +26,7 @@ class PgdasAnyCompt(WDShorcuts, NewSetPaths, ExcelToData):
         from autoesk_main.pgdas_fiscal_oesk.relacao_nfs import tres_valores_faturados
         # O vencimento DAS(seja pra qual for a compt) está certo, haja vista que se trata do mes atual
 
-
         sh_names = 'sem_mov', 'G5_ISS', 'G5_ICMS'
-
 
         intelligence_existence = self.intelligence_existence_done(
             'CERT_vs_LOGIN.xlsx')
@@ -70,8 +69,8 @@ class PgdasAnyCompt(WDShorcuts, NewSetPaths, ExcelToData):
                 self.now_person = CLIENTE
                 self.client_path = self.files_pathit(CLIENTE)
 
-
                 # if not existe o arquivo my_wised_check_path_file -> no momento atual, existe
+
                 def cria_inteligence():
                     print('Intelligence does not exist')
                     self.driver = pgdas_driver(self.client_path)
@@ -261,7 +260,6 @@ class PgdasAnyCompt(WDShorcuts, NewSetPaths, ExcelToData):
                     print(
                         f'{CLIENTE} \nJA DECLARADO: {JA_DECLARED}\n-----------------')
 
-
     def intelligence_existence_done(self, file: str):
         """:param file: path_file_name, excel"""
         import os
@@ -379,6 +377,50 @@ class PgdasAnyCompt(WDShorcuts, NewSetPaths, ExcelToData):
                     sleep(5)
             sleep(5)
 
+    def loga_cert(self):
+        """
+        :return: mixes the two functions above (show_actual_tk_window, mensagem)
+        """
+
+        import pyautogui as pygui
+        from time import sleep
+        driver = self.driver
+
+        driver.get("https://sso.acesso.gov.br/authorize?response_type=code&client_id=cav.receita.fazenda.gov.br&scope=openid+govbr_recupera_certificadox509+govbr_confiabilidades&redirect_uri=https://cav.receita.fazenda.gov.br/autenticacao/login/govbrsso&state=aESzUCvrPCL56W7S")
+
+        initial = WebDriverWait(driver, 30).until(
+            expected_conditions.presence_of_element_located((By.LINK_TEXT, 'Certificado digital')))
+
+        print('ativando janela acima, logando certificado abaixo, linhas 270')
+        sleep(5)
+        try:
+            a = pygui.getWindowsWithTitle('gov.br - Acesse sua conta')[0]
+            pygui.click(a.center, clicks=0)
+            pygui.move(100, 140)
+            pygui.click()
+            pygui.move(0, -300)
+            print('sleep')
+            sleep(2.5)
+            pygui.click(duration=.5)
+            driver.back()
+            WebDriverWait(driver, 30).until(
+                expected_conditions.presence_of_element_located((By.LINK_TEXT, 'Certificado digital'))).click()
+        except AttributeError:
+            initial.click()
+            driver.get("https://cav.receita.fazenda.gov.br/ecac/")
+            driver.back()
+            driver.get("https://cav.receita.fazenda.gov.br/autenticacao/login")
+            ldc = self.webdriverwait_by_id("login-dados-certificado")
+
+            self.click_ac_elementors(ldc.find_elements_by_css_selector("p")[1])
+
+        driver.implicitly_wait(10)
+        try:
+            driver.find_elements_by_tag_name("img")[1].click()
+        except ElementClickInterceptedException:
+            self.click_ac_elementors(
+                driver.find_elements_by_tag_name("img")[1].click())
+    
     def change_ecac_client(self, CNPJ):
         """:return: vai até ao site de declaração do ECAC."""
         driver = self.driver
@@ -846,7 +888,8 @@ class PgdasAnyCompt(WDShorcuts, NewSetPaths, ExcelToData):
         client_name = save_path[save_path.index('-')-2: save_path.index('-')+2]
         type_arquivo = 'png'
         try:
-            save = r'{}\\{}-SimplesNacionalDeclarado.{}'.format(save_path, add, type_arquivo)
+            save = r'{}\\{}-SimplesNacionalDeclarado.{}'.format(
+                save_path, add, type_arquivo)
             print(save, '---------> SAVE')
             return save
         except FileNotFoundError:

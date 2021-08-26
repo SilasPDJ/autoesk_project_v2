@@ -167,7 +167,7 @@ class EmailsDateScrap:
             with open('ultima_att_agenda.txt', 'w') as f:
                 f.write(f'ATUALIZADO -> {updt}')
                 print('\033[1;34m ---> Portal está de acordo com o arquivo\033[m')
-                return att
+                return updt
 
         # return True pra de acordo e False pra nova atualização????????????????????????????
 
